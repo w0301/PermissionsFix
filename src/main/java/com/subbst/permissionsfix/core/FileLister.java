@@ -29,9 +29,14 @@ import java.util.Set;
  */
 public class FileLister {
 
+    /**
+     * Class that is used to store file info in list.
+     */
     static public class ListEntry {
         private final File file;
-        private final Set<PosixFilePermission> filePerms;
+        private Set<PosixFilePermission> filePerms = null;
+        private Set<PosixFilePermission> alteredPerms = null;
+        private boolean permsAltered = false;
 
         public ListEntry(File file) throws PosixFilePermissionsException {
             this.file = file;
@@ -46,10 +51,30 @@ public class FileLister {
             return this.filePerms;
         }
 
+        public Set<PosixFilePermission> getAlteredPermissions() {
+            return this.alteredPerms;
+        }
+
+        public void alterPermissions(Set<PosixFilePermission> newPerms) {
+            this.alteredPerms = newPerms;
+            this.permsAltered = true;
+        }
+
+        public void savePermissions() throws PosixFilePermissionsException {
+            if (this.permsAltered) {
+                PosixFilePermissions.setPermissions(this.file, this.alteredPerms);
+                this.filePerms = this.alteredPerms;
+                this.alteredPerms = null;
+                this.permsAltered = false;
+            }
+        }
+
     }
 
-    private List<ListEntry> fileList;
-    private List<PosixFilePermissionsException> exceptionsList = new ArrayList<PosixFilePermissionsException>();
+    private final File baseFile;
+    private List<ListEntry> fileList = null;
+    private List<PosixFilePermissionsException> loadingExceptions = new ArrayList<PosixFilePermissionsException>();
+    private List<PosixFilePermissionsException> savingExceptions = new ArrayList<PosixFilePermissionsException>();
 
     private static List<ListEntry> createFileList(File f, List<PosixFilePermissionsException> exList) {
         File[] files = f.listFiles();
@@ -76,32 +101,52 @@ public class FileLister {
         return retList;
     }
 
-    public FileLister(File f, boolean recursive) {
+    public FileLister(File file) {
         super();
+        this.baseFile = file;
+    }
+
+    public void loadFiles(boolean recursive) {
+        // firstly clear exception list and file list
+        this.loadingExceptions.clear();
+        if(this.fileList != null) this.fileList.clear();
         try {
-            if (recursive && f.isDirectory()) {
-                fileList = createFileList(f, exceptionsList);
+            if (recursive && this.baseFile.isDirectory()) {
+                fileList = createFileList(this.baseFile, this.loadingExceptions);
             }
             else {
                 fileList = new ArrayList<ListEntry>();
-                fileList.add(new ListEntry(f));
+                fileList.add(new ListEntry(this.baseFile));
             }
         }
         catch (PosixFilePermissionsException ex) {
-            exceptionsList.add(ex);
+            this.loadingExceptions.add(ex);
         }
     }
 
-    public FileLister(File f) {
-        this(f, false);
+    public void saveAllPermissions() {
+        // firstly clear exception list
+        this.savingExceptions.clear();
+        for (ListEntry le : this.fileList) {
+            try {
+                le.savePermissions();
+            }
+            catch (PosixFilePermissionsException ex) {
+                this.savingExceptions.add(ex);
+            }
+        }
     }
 
     public List<ListEntry> getFileList() {
         return this.fileList;
     }
 
-    public List<PosixFilePermissionsException> getExceptionsList() {
-        return this.exceptionsList;
+    public List<PosixFilePermissionsException> getLoadingExceptions() {
+        return this.loadingExceptions;
+    }
+
+    public List<PosixFilePermissionsException> getSavingExceptions() {
+        return this.savingExceptions;
     }
 
 }

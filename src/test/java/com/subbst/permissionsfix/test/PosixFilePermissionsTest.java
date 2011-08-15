@@ -40,6 +40,18 @@ public class PosixFilePermissionsTest {
 
     private File testFile = null;
 
+    private static boolean commonTest(File f, Set<PosixFilePermission> perms) {
+        Set<PosixFilePermission> gotPerms = null;
+        try {
+            PosixFilePermissions.setPermissions(f, perms);
+            gotPerms = PosixFilePermissions.getPermissions(f);
+        }
+        catch(PosixFilePermissionsException e) {
+            return false;
+        }
+        return gotPerms.containsAll(perms);
+    }
+
     @Before
     public void setUp() throws IOException {
         testFile = new File("testFile");
@@ -93,18 +105,6 @@ public class PosixFilePermissionsTest {
         File notExistingFile = new File("notExistingFile");
         if (notExistingFile.exists()) notExistingFile.delete();
         PosixFilePermissions.setPermissions(notExistingFile, EnumSet.noneOf(PosixFilePermission.class));
-    }
-
-    private boolean commonTest(File f, Set<PosixFilePermission> perms) {
-        Set<PosixFilePermission> gotPerms = null;
-        try {
-            PosixFilePermissions.setPermissions(f, perms);
-            gotPerms = PosixFilePermissions.getPermissions(f);
-        }
-        catch(PosixFilePermissionsException e) {
-            return false;
-        }
-        return gotPerms.containsAll(perms);
     }
 
 }

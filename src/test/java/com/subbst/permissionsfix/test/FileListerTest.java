@@ -57,7 +57,8 @@ public class FileListerTest {
         for (File f : fileStruct) f.createNewFile();
 
         // testing
-        FileLister tester = new FileLister(dirStruct.get(0), true);
+        FileLister tester = new FileLister(dirStruct.get(0));
+        tester.loadFiles(true);
         List<File> testerList = new ArrayList<File>();
         for (FileLister.ListEntry le : tester.getFileList()) {
             testerList.add(le.getFile());
@@ -76,7 +77,8 @@ public class FileListerTest {
         testDir.mkdir();
 
         // testing
-        FileLister tester = new FileLister(testDir, true);
+        FileLister tester = new FileLister(testDir);
+        tester.loadFiles(true);
         Assert.assertTrue(tester.getFileList().get(0).getFile().equals(testDir));
 
         // clean up
@@ -91,6 +93,7 @@ public class FileListerTest {
 
         // testing
         FileLister tester = new FileLister(testFile);
+        tester.loadFiles(false);
         Assert.assertTrue(tester.getFileList().get(0).getFile().equals(testFile));
 
         // clean up

@@ -10,18 +10,18 @@ extern "C" {
 /*
  * Class:     com_subbst_permissionsfix_core_PosixFilePermissions
  * Method:    get
- * Signature: (Ljava/io/File;)Ljava/util/Set;
+ * Signature: (Ljava/lang/String;)[I
  */
-JNIEXPORT jobject JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_get
-  (JNIEnv *, jclass, jobject);
+JNIEXPORT jintArray JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_get
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     com_subbst_permissionsfix_core_PosixFilePermissions
  * Method:    set
- * Signature: (Ljava/io/File;Ljava/util/Set;)V
+ * Signature: (Ljava/lang/String;[I)V
  */
 JNIEXPORT void JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_set
-  (JNIEnv *, jclass, jobject, jobject);
+  (JNIEnv *, jclass, jstring, jintArray);
 
 #ifdef __cplusplus
 }

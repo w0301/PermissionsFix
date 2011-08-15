@@ -20,6 +20,7 @@
 package com.subbst.permissionsfix.core;
 
 import java.io.File;
+import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -31,13 +32,25 @@ import java.util.Set;
  */
 public class PosixFilePermissions {
 
+    private native static int[] get(String file);
+    private native static void set(String file, int[] perms);
+
     /**
      * Get file's permissions.
      *
      * @param f File whichs permissions will be returned.
      * @return Set of file's permissions.
      */
-    public native static Set<PosixFilePermission> get(File f);
+    public static Set<PosixFilePermission> getPermissions(File f) {
+        int[] lowLevelPerms = get(f.getAbsolutePath());
+        Set<PosixFilePermission> retObj = EnumSet.noneOf(PosixFilePermission.class);
+
+        for (int permCode : lowLevelPerms) {
+            retObj.add(PosixFilePermission.getByCode(permCode));
+        }
+
+        return retObj;
+    }
 
     /**
      * Set permissions for specific file.
@@ -45,7 +58,21 @@ public class PosixFilePermissions {
      * @param f File whichs permissions will be set.
      * @param perms Permissions to set.
      */
-    public native static void set(File f, Set<PosixFilePermission> perms);
+    public static void setPermissions(File f, Set<PosixFilePermission> perms) {
+        int[] lowLevelPerms = new int[PosixFilePermission.values().length];
+        int lastI = 0;
+        for (PosixFilePermission perm : perms) {
+            lowLevelPerms[lastI++] = perm.getCode();
+        }
+
+        set(f.getAbsolutePath(), lowLevelPerms);
+    }
+
+    static {
+        // loading library from default library paths
+        // adjust LD_LIBRARY_PATH in app launcher script!
+        System.loadLibrary("PermissionsFix");
+    }
 
     private PosixFilePermissions() {
         super();

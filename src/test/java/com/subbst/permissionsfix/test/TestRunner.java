@@ -17,40 +17,33 @@
  * You should have received a copy of the GNU General Public License
  * along with PermissionsFix. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.subbst.permissionsfix.core;
+package com.subbst.permissionsfix.test;
+
+
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
 
 /**
- * Enum type for file permissions.
+ * Runner class for tests.
  *
- * This enum contains all possible permissions. Each file
- * has one or more of these permissions.
+ * Use main method in this class to run all tests.
  */
-public enum PosixFilePermission {
-    GROUP_EXECUTE(11),
-    GROUP_READ(12),
-    GROUP_WRITE(13),
-    OTHERS_EXECUTE(21),
-    OTHERS_READ(22),
-    OTHERS_WRITE(23),
-    OWNER_EXECUTE(31),
-    OWNER_READ(32),
-    OWNER_WRITE(33);
+public class TestRunner {
 
-    private final int code;
-
-    PosixFilePermission(int code) {
-        this.code = code;
-    }
-
-    public int getCode() {
-        return this.code;
-    }
-
-    public static PosixFilePermission getByCode(int code) {
-        for (PosixFilePermission perm : values()) {
-            if (perm.getCode() == code) return perm;
+    /**
+     * Main method that runs all tests.
+     *
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        Result result = JUnitCore.runClasses(PosixFilePermissionsTest.class);
+		for (Failure failure : result.getFailures()) {
+			System.out.println(failure.toString());
+		}
+        if (result.wasSuccessful()) {
+            System.out.println("All tests were successful.");
         }
-        return OWNER_READ;
     }
 
 }

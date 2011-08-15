@@ -7,6 +7,9 @@
     <!-- setting path where jni.h header resides -->
     <property name="jni.dir" location="${java.home}/../include"/>
 
+    <!-- setting path where junit4.jar resides -->
+    <property name="junit.dir" location="/usr/share/java/junit4.jar"/>
+
     <!-- sets property for native src dir determination (now only unix is supported) -->
     <condition property="platform" value="unix" else="unix">
         <os family="unix"/>
@@ -18,8 +21,11 @@
     <!-- uncomment this or set property in command line to dist test files -->
     <!-- property name="testdist" value="true"/ -->
 
-    <!-- loading property file -->
+    <!-- loading override property file -->
     <property file="build.properties"/>
+
+    <!-- loading default property file -->
+    <property file="build/default.properties"/>
 
     <target name="compile-main-java" description="compile the main java sources">
         <!-- compiling java sources -->
@@ -38,6 +44,7 @@
                 <dirset dir="${src.main.jni.dir}"/>
                 <dirset dir="${jni.dir}"/>
             </includepath>
+            <compilerarg value="-std=c99"/>
         </cpptasks:cc>
     </target>
 
@@ -52,13 +59,14 @@
     <target name="compile-test" depends="compile-main" description="compile the unit tests">
         <!-- compiling java sources -->
         <mkdir dir="${build.test.java.dir}"/>
-        <javac srcdir="${src.test.java.dir}" destdir="${build.test.java.dir}" debug="${debug}" includeAntRuntime="false"/>
+        <javac srcdir="${src.test.java.dir}" destdir="${build.test.java.dir}" debug="${debug}"
+                classpath="${build.main.java.dir}:${java.class.path}" includeAntRuntime="false"/>
     </target>
 
     <target name="dist-main" depends="compile-main" description="put main app to dist folder">
         <!-- make main app jar -->
         <mkdir dir="${dist.main.java.dir}"/>
-        <jar destfile="${dist.main.java.dir}/${dist.main.java.jar}">
+        <jar destfile="${dist.main.java.dir}/${dist.main.java.jar}" update="true">
             <fileset dir="${build.main.java.dir}"/>
             <manifest>
                 <attribute name="Main-Class" value="${dist.main.java.main-class}"/>
@@ -67,22 +75,33 @@
 
         <!-- copy shared library/ies -->
         <mkdir dir="${dist.main.native.dir}"/>
-        <copy todir="${dist.main.native.dir}">
+        <copy todir="${dist.main.native.dir}" overwrite="true">
             <fileset dir="${build.main.native.dir}">
                 <exclude name="history.xml"/>
             </fileset>
         </copy>
+
+        <!-- copy runner script -->
+        <mkdir dir="${dist.main.script.dir}"/>
+        <copy file="${src.main.script.file}" tofile="${dist.main.script.dir}/${dist.main.script.file}" overwrite="true"/>
+        <chmod file="${dist.main.script.dir}/${dist.main.script.file}" perm="ugo+x"/>
     </target>
 
     <target name="dist-test" depends="compile-test" if="testdist" description="put test app to dist folder">
         <!-- make test app jar -->
         <mkdir dir="${dist.test.java.dir}"/>
-        <jar destfile="${dist.test.java.dir}/${dist.test.java.jar}">
+        <jar destfile="${dist.test.java.dir}/${dist.test.java.jar}" update="true">
             <fileset dir="${build.test.java.dir}"/>
             <manifest>
                 <attribute name="Main-Class" value="${dist.test.java.main-class}"/>
+                <attribute name="Class-Path" value="${dist.main.java.dir}/${dist.main.java.jar} ${junit.dir}"/>
             </manifest>
         </jar>
+
+        <!-- copy runner script -->
+        <mkdir dir="${dist.test.script.dir}"/>
+        <copy file="${src.test.script.file}" tofile="${dist.test.script.dir}/${dist.test.script.file}" overwrite="true"/>
+        <chmod file="${dist.test.script.dir}/${dist.test.script.file}" perm="ugo+x"/>
     </target>
 
     <target name="compile" depends="compile-main,compile-test" description="compile all sources"/>

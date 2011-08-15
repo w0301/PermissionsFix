@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# get the current script location, this allow default behavior
+SCRIPT_DIR=$(pwd)/`dirname ${0}`
+
+# native shared library(ies) location
+SO_DIR=${SCRIPT_DIR}/native
+
+# test jar file
+JAR_FILE=${SCRIPT_DIR}/test/PermissionsFixTests.jar
+
+# running JVM, ${JAR_FILE} will be run with library paths adjusted
+LD_LIBRARY_PATH="${SO_DIR}:${LD_LIBRARY_PATH}" java -jar ${JAR_FILE}
+

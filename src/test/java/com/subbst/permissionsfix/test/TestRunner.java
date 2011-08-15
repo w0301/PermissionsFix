@@ -37,7 +37,7 @@ public class TestRunner {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Result result = JUnitCore.runClasses(PosixFilePermissionsTest.class);
+        Result result = JUnitCore.runClasses(PosixFilePermissionsTest.class, FileListerTest.class);
 		for (Failure failure : result.getFailures()) {
 			System.out.println(failure.toString());
 		}

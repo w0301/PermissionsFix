@@ -1,57 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="PermissionsFix" default="dist" basedir=".">
+<project name="PermissionsFix" default="dist" basedir="." xmlns:cpptasks="antlib:net.sf.antcontrib.cpptasks">
     <description>
-        Application that fixs your linux files permissions problems.
+        Application that fixs your unix files permissions problems.
     </description>
 
-    <!-- source directories -->
-    <property name="src" location="src"/>
-    <property name="tests" location="tests"/>
+    <!-- setting path where jni.h header resides -->
+    <property name="jni.dir" location="${java.home}/../include"/>
 
-    <!-- output directories for compilation -->
-    <property name="build" location="../build/Ant"/>
-    <property name="src-build" location="${build}/classes"/>
-    <property name="tests-build" location="${build}/tests"/>
+    <!-- sets property for native src dir determination (now only unix is supported) -->
+    <condition property="platform" value="unix" else="unix">
+        <os family="unix"/>
+    </condition>
 
-    <!-- output directories and info for dist jars -->
-    <property name="dist" location="../dist"/>
-    <property name="main-class" value="com.subbst.permissionsfix.MainClass"/>
+    <!-- sets debug information to false by default -->
+    <property name="debug" value="false"/>
 
-    <target name="init">
-        <!-- Create the time stamp -->
-        <tstamp/>
+    <!-- uncomment this or set property in command line to dist test files -->
+    <!-- property name="testdist" value="true"/ -->
 
-        <!-- Create the build directory structure used by compile and test targets -->
-        <mkdir dir="${src-build}"/>
-        <mkdir dir="${tests-build}"/>
+    <!-- loading property file -->
+    <property file="build.properties"/>
+
+    <target name="compile-main-java" description="compile the main java sources">
+        <!-- compiling java sources -->
+        <mkdir dir="${build.main.java.dir}"/>
+        <javac srcdir="${src.main.java.dir}" destdir="${build.main.java.dir}" debug="${debug}" includeAntRuntime="false"/>
     </target>
 
-    <target name="compile" depends="init" description="compile the source">
-        <!-- Compile the java code from ${src} into ${src-build} -->
-        <javac srcdir="${src}/java" destdir="${src-build}"/>
+    <target name="compile-main-native" description="compile the main native sources">
+        <!-- compiling native sources -->
+        <mkdir dir="${build.main.native-obj.dir}"/>
+        <mkdir dir="${build.main.native.dir}"/>
+        <cpptasks:cc outtype="shared" outfile="${build.main.native.dir}/${dist.main.native.lib-name}"
+                objdir="${build.main.native-obj.dir}" debug="${debug}">
+            <fileset dir="${src.main.native.dir}"/>
+            <includepath>
+                <dirset dir="${src.main.jni.dir}"/>
+                <dirset dir="${jni.dir}"/>
+            </includepath>
+        </cpptasks:cc>
     </target>
 
-    <target name="compile-tests" depends="init,compile" description="compile the unit tests">
-        <!-- Compile the java unit tests from ${test} into ${tests-build} -->
-        <javac srcdir="${tests}" destdir="${tests-build}"/>
+    <target name="update-jni" depends="compile-main-java" description="updates jni headers">
+        <javah destdir="${src.main.jni.dir}" force="yes" classpath="${build.main.java.dir}">
+            <class name="com.subbst.permissionsfix.core.PosixFilePermissions"/>
+        </javah>
     </target>
 
-    <target name="dist" depends="compile" description="generate the distribution">
-        <!-- Create the distribution directory -->
-        <mkdir dir="${dist}"/>
+    <target name="compile-main" depends="compile-main-java,compile-main-native" description="compile main sources"/>
 
-        <!-- Put everything in ${src-build} into the PermissionsFix-${DSTAMP}.jar file -->
-        <jar destfile="${dist}/PermissionsFix-${DSTAMP}.jar">
-            <fileset dir="${src-build}"/>
+    <target name="compile-test" depends="compile-main" description="compile the unit tests">
+        <!-- compiling java sources -->
+        <mkdir dir="${build.test.java.dir}"/>
+        <javac srcdir="${src.test.java.dir}" destdir="${build.test.java.dir}" debug="${debug}" includeAntRuntime="false"/>
+    </target>
+
+    <target name="dist-main" depends="compile-main" description="put main app to dist folder">
+        <!-- make main app jar -->
+        <mkdir dir="${dist.main.java.dir}"/>
+        <jar destfile="${dist.main.java.dir}/${dist.main.java.jar}">
+            <fileset dir="${build.main.java.dir}"/>
             <manifest>
-                <attribute name="Main-Class" value="${main-class}"/>
+                <attribute name="Main-Class" value="${dist.main.java.main-class}"/>
+            </manifest>
+        </jar>
+
+        <!-- copy shared library/ies -->
+        <mkdir dir="${dist.main.native.dir}"/>
+        <copy todir="${dist.main.native.dir}">
+            <fileset dir="${build.main.native.dir}">
+                <exclude name="history.xml"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="dist-test" depends="compile-test" if="testdist" description="put test app to dist folder">
+        <!-- make test app jar -->
+        <mkdir dir="${dist.test.java.dir}"/>
+        <jar destfile="${dist.test.java.dir}/${dist.test.java.jar}">
+            <fileset dir="${build.test.java.dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="${dist.test.java.main-class}"/>
             </manifest>
         </jar>
     </target>
 
+    <target name="compile" depends="compile-main,compile-test" description="compile all sources"/>
+    <target name="dist" depends="dist-main,dist-test" description="dist all binaries"/>
+
     <target name="clean" description="clean up">
-        <!-- Delete the ${build} and ${dist} directory trees -->
-        <delete dir="${build}"/>
-        <delete dir="${dist}"/>
+        <delete dir="${dist.dir}"/>
+        <delete dir="${build.dir}"/>
     </target>
 </project>

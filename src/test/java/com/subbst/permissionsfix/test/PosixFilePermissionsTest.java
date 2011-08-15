@@ -31,6 +31,7 @@ import org.junit.Test;
 
 import com.subbst.permissionsfix.core.PosixFilePermission;
 import com.subbst.permissionsfix.core.PosixFilePermissions;
+import com.subbst.permissionsfix.core.PosixFilePermissionsException;
 
 /**
  * Testing class for PosixFilePermissions class.
@@ -53,13 +54,13 @@ public class PosixFilePermissionsTest {
     @Test
     public void testGetSetPermissions1() {
         Set<PosixFilePermission> newPerms = EnumSet.allOf(PosixFilePermission.class);
-        Assert.assertTrue("test testGetSetPermissions1() failed", commonTest(testFile, newPerms));
+        Assert.assertTrue(commonTest(testFile, newPerms));
     }
 
     @Test
     public void testGetSetPermissions2() {
         Set<PosixFilePermission> newPerms = EnumSet.noneOf(PosixFilePermission.class);
-        Assert.assertTrue("test testGetSetPermissions2() failed", commonTest(testFile, newPerms));
+        Assert.assertTrue(commonTest(testFile, newPerms));
     }
 
     @Test
@@ -68,7 +69,7 @@ public class PosixFilePermissionsTest {
         newPerms.add(PosixFilePermission.OTHERS_READ);
         newPerms.add(PosixFilePermission.OWNER_READ);
         newPerms.add(PosixFilePermission.GROUP_READ);
-        Assert.assertTrue("test testGetSetPermissions2() failed", commonTest(testFile, newPerms));
+        Assert.assertTrue(commonTest(testFile, newPerms));
     }
 
     @Test
@@ -77,12 +78,32 @@ public class PosixFilePermissionsTest {
         newPerms.add(PosixFilePermission.OTHERS_READ);
         newPerms.add(PosixFilePermission.OWNER_EXECUTE);
         newPerms.add(PosixFilePermission.GROUP_WRITE);
-        Assert.assertTrue("test testGetSetPermissions2() failed", commonTest(testFile, newPerms));
+        Assert.assertTrue(commonTest(testFile, newPerms));
+    }
+
+    @Test(expected=PosixFilePermissionsException.class)
+    public void testExceptionsThrowing1() throws PosixFilePermissionsException {
+        File notExistingFile = new File("notExistingFile");
+        if (notExistingFile.exists()) notExistingFile.delete();
+        PosixFilePermissions.getPermissions(notExistingFile);
+    }
+
+    @Test(expected=PosixFilePermissionsException.class)
+    public void testExceptionsThrowing2() throws PosixFilePermissionsException {
+        File notExistingFile = new File("notExistingFile");
+        if (notExistingFile.exists()) notExistingFile.delete();
+        PosixFilePermissions.setPermissions(notExistingFile, EnumSet.noneOf(PosixFilePermission.class));
     }
 
     private boolean commonTest(File f, Set<PosixFilePermission> perms) {
-        PosixFilePermissions.setPermissions(f, perms);
-        Set<PosixFilePermission> gotPerms = PosixFilePermissions.getPermissions(f);
+        Set<PosixFilePermission> gotPerms = null;
+        try {
+            PosixFilePermissions.setPermissions(f, perms);
+            gotPerms = PosixFilePermissions.getPermissions(f);
+        }
+        catch(PosixFilePermissionsException e) {
+            return false;
+        }
         return gotPerms.containsAll(perms);
     }
 

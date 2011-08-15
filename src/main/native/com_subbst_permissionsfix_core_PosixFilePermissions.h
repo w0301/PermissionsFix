@@ -18,9 +18,9 @@ JNIEXPORT jintArray JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermiss
 /*
  * Class:     com_subbst_permissionsfix_core_PosixFilePermissions
  * Method:    set
- * Signature: (Ljava/lang/String;[I)V
+ * Signature: (Ljava/lang/String;[I)I
  */
-JNIEXPORT void JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_set
+JNIEXPORT jint JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_set
   (JNIEnv *, jclass, jstring, jintArray);
 
 #ifdef __cplusplus

@@ -33,16 +33,21 @@ import java.util.Set;
 public class PosixFilePermissions {
 
     private native static int[] get(String file);
-    private native static void set(String file, int[] perms);
+    private native static int set(String file, int[] perms);
 
     /**
      * Get file's permissions.
      *
      * @param f File whichs permissions will be returned.
      * @return Set of file's permissions.
+     * @throws PosixFilePermissionsException when getting of permissions failed
      */
-    public static Set<PosixFilePermission> getPermissions(File f) {
-        int[] lowLevelPerms = get(f.getAbsolutePath());
+    public static Set<PosixFilePermission> getPermissions(File f) throws PosixFilePermissionsException {
+        String fileName = f.getAbsolutePath();
+        int[] lowLevelPerms = get(fileName);
+        if (lowLevelPerms == null)
+            throw new PosixFilePermissionsException("Unable to get permissions.", fileName);
+
         Set<PosixFilePermission> retObj = EnumSet.noneOf(PosixFilePermission.class);
 
         for (int permCode : lowLevelPerms) {
@@ -57,15 +62,18 @@ public class PosixFilePermissions {
      *
      * @param f File whichs permissions will be set.
      * @param perms Permissions to set.
+     * @throws PosixFilePermissionsException when setting of permissions failed
      */
-    public static void setPermissions(File f, Set<PosixFilePermission> perms) {
+    public static void setPermissions(File f, Set<PosixFilePermission> perms) throws PosixFilePermissionsException {
         int[] lowLevelPerms = new int[PosixFilePermission.values().length];
         int lastI = 0;
         for (PosixFilePermission perm : perms) {
             lowLevelPerms[lastI++] = perm.getCode();
         }
 
-        set(f.getAbsolutePath(), lowLevelPerms);
+        String fileName = f.getAbsolutePath();
+        if (set(fileName, lowLevelPerms) == -1)
+            throw new PosixFilePermissionsException("Unable to set permissions.", fileName);
     }
 
     static {

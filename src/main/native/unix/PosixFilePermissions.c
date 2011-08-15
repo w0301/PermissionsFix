@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2011
+ * Richard Kakaš <richard.kakas@gmail.com>
+ *
+ * This file is part of PermissionsFix.
+ *
+ * PermissionsFix is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * PermissionsFix is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with PermissionsFix. If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "com_subbst_permissionsfix_core_PosixFilePermissions.h"
 
 #include <sys/types.h>
@@ -23,7 +42,10 @@ JNIEXPORT jintArray JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermiss
 
     // calling kernel function to get permissions
     struct stat fileStats;
-    stat(fileName, &fileStats);
+    if(stat(fileName, &fileStats) == -1) {
+        (*env)->ReleaseStringUTFChars(env, javaFileName, fileName);
+        return NULL;
+    }
     mode_t nativePerms = fileStats.st_mode;
 
     // releasing native string
@@ -52,7 +74,7 @@ JNIEXPORT jintArray JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermiss
     return retArr;
 }
 
-JNIEXPORT void JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_set
+JNIEXPORT jint JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_set
         (JNIEnv *env, jclass cls, jstring javaFileName, jintArray perms) {
     // getting java array
     jint *buff = (*env)->GetIntArrayElements(env, perms, NULL);
@@ -78,7 +100,10 @@ JNIEXPORT void JNICALL Java_com_subbst_permissionsfix_core_PosixFilePermissions_
     const char *fileName = (*env)->GetStringUTFChars(env, javaFileName, NULL);
 
     // updating file permissions
-    chmod(fileName, nativePerms);
+    if(chmod(fileName, nativePerms) == -1) {
+        (*env)->ReleaseStringUTFChars(env, javaFileName, fileName);
+        return -1;
+    }
 
     // releasing native string
     (*env)->ReleaseStringUTFChars(env, javaFileName, fileName);

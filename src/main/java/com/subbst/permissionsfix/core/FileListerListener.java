@@ -17,32 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with PermissionsFix. If not, see <http://www.gnu.org/licenses/>.
  */
-package com.subbst.permissionsfix;
+package com.subbst.permissionsfix.core;
 
-import com.subbst.permissionsfix.gui.MainFrame;
-import java.awt.EventQueue;
+import java.util.EventListener;
 
 /**
- * Entry point to a program.
- *
- * This class provide main method of application.
- * Run this method to run application's user interface.
+ * Listener interaface that has to be implemented by class
+ * to listen to events sent by FileLister class instance.
  */
-public class MainClass {
+public interface FileListerListener extends EventListener {
 
-    /**
-     * Application's main method.
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // running swing frame
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainFrame("PermissionsFix").setVisible(true);
-            }
-        });
-    }
+    public void preloadAction(int filesCount);
+
+    public void afterloadAction();
+
+    public void fileLoadedAction(FileLister.ListEntry file);
 
 }

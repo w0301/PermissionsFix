@@ -33,7 +33,7 @@ public class FileLister {
     /**
      * Class that is used to store file info in list.
      */
-    static public class ListEntry {
+    public static final class ListEntry {
         private final File file;
         private Set<PosixFilePermission> filePerms = null;
         private Set<PosixFilePermission> alteredPerms = null;
@@ -77,6 +77,8 @@ public class FileLister {
     }
 
     private final File baseFile;
+
+    private List<FileListerListener> listenersList = new ArrayList<FileListerListener>();
     private List<ListEntry> fileList = new ArrayList<ListEntry>();
     private List<PosixFilePermissionsException> loadingExceptions = new ArrayList<PosixFilePermissionsException>();
     private List<PosixFilePermissionsException> savingExceptions = new ArrayList<PosixFilePermissionsException>();
@@ -100,6 +102,36 @@ public class FileLister {
         this.baseFile = file;
     }
 
+    public void addListener(FileListerListener listener) {
+        this.listenersList.add(listener);
+    }
+
+    public void removeListener(FileListerListener listener) {
+        this.listenersList.remove(listener);
+    }
+
+    public FileListerListener[] getListeners() {
+        return this.listenersList.toArray(new FileListerListener[0]);
+    }
+
+    public void firePreload(int filesCount) {
+        for (FileListerListener l : this.listenersList) {
+            l.preloadAction(filesCount);
+        }
+    }
+
+    public void fireAfterload() {
+        for (FileListerListener l : this.listenersList) {
+            l.afterloadAction();
+        }
+    }
+
+    public void fireFileLoaded(ListEntry le) {
+        for (FileListerListener l : this.listenersList) {
+            l.fileLoadedAction(le);
+        }
+    }
+
     public void loadFiles(boolean recursive) {
         // firstly clear exception list and file list
         this.fileList.clear();
@@ -108,15 +140,28 @@ public class FileLister {
         // create teporaly list with all files to by loaded
         List<File> filesToLoad = listFiles(this.baseFile, recursive);
 
+        // inform listeners that loading will start soon
+        firePreload(filesToLoad.size());
+
         // fill persistant list and loading permissions to it
         for (File f : filesToLoad) {
+            ListEntry newEntry = null;
             try {
-                this.fileList.add(new ListEntry(f));
+                // loading file
+                newEntry = new ListEntry(f);
+                this.fileList.add(newEntry);
             }
             catch (PosixFilePermissionsException ex) {
                 this.loadingExceptions.add(ex);
             }
+            finally {
+                // do this even if loading failed, in which case newEntry == null
+                fireFileLoaded(newEntry);
+            }
         }
+
+        // inform listeners that loading ended
+        fireAfterload();
     }
 
     public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms) {
@@ -141,15 +186,15 @@ public class FileLister {
         }
     }
 
-    public List<ListEntry> getFileList() {
+    public final List<ListEntry> getFileList() {
         return this.fileList;
     }
 
-    public List<PosixFilePermissionsException> getLoadingExceptions() {
+    public final List<PosixFilePermissionsException> getLoadingExceptions() {
         return this.loadingExceptions;
     }
 
-    public List<PosixFilePermissionsException> getSavingExceptions() {
+    public final List<PosixFilePermissionsException> getSavingExceptions() {
         return this.savingExceptions;
     }
 

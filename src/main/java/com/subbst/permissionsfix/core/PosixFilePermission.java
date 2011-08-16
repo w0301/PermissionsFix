@@ -26,24 +26,36 @@ package com.subbst.permissionsfix.core;
  * has one or more of these permissions.
  */
 public enum PosixFilePermission {
-    GROUP_EXECUTE(11),
-    GROUP_READ(12),
-    GROUP_WRITE(13),
-    OTHERS_EXECUTE(21),
-    OTHERS_READ(22),
-    OTHERS_WRITE(23),
-    OWNER_EXECUTE(31),
-    OWNER_READ(32),
-    OWNER_WRITE(33);
+    GROUP_EXECUTE(11, 5, 'x'),
+    GROUP_READ(12, 3, 'r'),
+    GROUP_WRITE(13, 4, 'w'),
+    OTHERS_EXECUTE(21, 8, 'x'),
+    OTHERS_READ(22, 6, 'r'),
+    OTHERS_WRITE(23, 7, 'w'),
+    OWNER_EXECUTE(31, 2, 'x'),
+    OWNER_READ(32, 0, 'r'),
+    OWNER_WRITE(33, 1, 'w');
 
     private final int code;
+    private final int pos;
+    private final char sym;
 
-    PosixFilePermission(int code) {
+    PosixFilePermission(int code, int pos, char sym) {
         this.code = code;
+        this.pos = pos;
+        this.sym = sym;
     }
 
-    public int getCode() {
+    public final int getCode() {
         return this.code;
+    }
+
+    public final int getPosition() {
+        return this.pos;
+    }
+
+    public final char getSymbol() {
+        return this.sym;
     }
 
     public static PosixFilePermission getByCode(int code) {

@@ -20,6 +20,7 @@
 package com.subbst.permissionsfix.core;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +44,10 @@ public class FileLister {
             this.filePerms = PosixFilePermissions.getPermissions(file);
         }
 
+        public boolean isAltered() {
+            return this.permsAltered;
+        }
+
         public File getFile() {
             return this.file;
         }
@@ -61,7 +66,7 @@ public class FileLister {
         }
 
         public void savePermissions() throws PosixFilePermissionsException {
-            if (this.permsAltered) {
+            if (isAltered()) {
                 PosixFilePermissions.setPermissions(this.file, this.alteredPerms);
                 this.filePerms = this.alteredPerms;
                 this.alteredPerms = null;
@@ -72,32 +77,21 @@ public class FileLister {
     }
 
     private final File baseFile;
-    private List<ListEntry> fileList = null;
+    private List<ListEntry> fileList = new ArrayList<ListEntry>();
     private List<PosixFilePermissionsException> loadingExceptions = new ArrayList<PosixFilePermissionsException>();
     private List<PosixFilePermissionsException> savingExceptions = new ArrayList<PosixFilePermissionsException>();
 
-    private static List<ListEntry> createFileList(File f, List<PosixFilePermissionsException> exList) {
-        File[] files = f.listFiles();
-        List<ListEntry> retList = new ArrayList<ListEntry>();
-        try {
-            retList.add(new ListEntry(f));
-        }
-        catch (PosixFilePermissionsException ex) {
-            if (exList != null) exList.add(ex);
-        }
+    private static List<File> listFiles(File file, boolean recursive) {
+        List<File> retList = new ArrayList<File>();
+        retList.add(file);
 
-        for (File file : files) {
-            try {
-                if (file.isDirectory()) {
-                    retList.addAll(createFileList(file, exList));
-                }
-                else retList.add(new ListEntry(file));
-            }
-            catch (PosixFilePermissionsException ex) {
-                if (exList != null) exList.add(ex);
+        // getting files in directory if possible and necessary
+        if (recursive && file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                retList.addAll(listFiles(f, true));
             }
         }
-
         return retList;
     }
 
@@ -108,19 +102,29 @@ public class FileLister {
 
     public void loadFiles(boolean recursive) {
         // firstly clear exception list and file list
+        this.fileList.clear();
         this.loadingExceptions.clear();
-        if(this.fileList != null) this.fileList.clear();
-        try {
-            if (recursive && this.baseFile.isDirectory()) {
-                fileList = createFileList(this.baseFile, this.loadingExceptions);
+
+        // create teporaly list with all files to by loaded
+        List<File> filesToLoad = listFiles(this.baseFile, recursive);
+
+        // fill persistant list and loading permissions to it
+        for (File f : filesToLoad) {
+            try {
+                this.fileList.add(new ListEntry(f));
             }
-            else {
-                fileList = new ArrayList<ListEntry>();
-                fileList.add(new ListEntry(this.baseFile));
+            catch (PosixFilePermissionsException ex) {
+                this.loadingExceptions.add(ex);
             }
         }
-        catch (PosixFilePermissionsException ex) {
-            this.loadingExceptions.add(ex);
+    }
+
+    public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms) {
+        // check all file entries and if it is desired change permissions
+        for (ListEntry le : this.fileList) {
+            if(filter.accept(le.getFile())) {
+                le.alterPermissions(perms);
+            }
         }
     }
 

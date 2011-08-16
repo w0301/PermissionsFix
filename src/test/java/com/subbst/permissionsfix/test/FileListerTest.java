@@ -64,6 +64,7 @@ public class FileListerTest {
             testerList.add(le.getFile());
         }
         Assert.assertTrue(testerList.containsAll(dirStruct) && testerList.containsAll(fileStruct));
+        Assert.assertTrue(testerList.size() == dirStruct.size() + fileStruct.size());
 
         // clean up
         for (File f : fileStruct) f.delete();
@@ -79,6 +80,7 @@ public class FileListerTest {
         // testing
         FileLister tester = new FileLister(testDir);
         tester.loadFiles(true);
+        Assert.assertTrue(tester.getFileList().size() == 1);
         Assert.assertTrue(tester.getFileList().get(0).getFile().equals(testDir));
 
         // clean up
@@ -94,6 +96,7 @@ public class FileListerTest {
         // testing
         FileLister tester = new FileLister(testFile);
         tester.loadFiles(false);
+        Assert.assertTrue(tester.getFileList().size() == 1);
         Assert.assertTrue(tester.getFileList().get(0).getFile().equals(testFile));
 
         // clean up

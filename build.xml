@@ -48,19 +48,13 @@
         </cpptasks:cc>
     </target>
 
-    <target name="update-jni" depends="compile-main-java" description="updates jni headers">
-        <javah destdir="${src.main.jni.dir}" force="yes" classpath="${build.main.java.dir}">
-            <class name="com.subbst.permissionsfix.core.PosixFilePermissions"/>
-        </javah>
-    </target>
-
     <target name="compile-main" depends="compile-main-java,compile-main-native" description="compile main sources"/>
 
     <target name="compile-test" depends="compile-main" description="compile the unit tests">
         <!-- compiling java sources -->
         <mkdir dir="${build.test.java.dir}"/>
         <javac srcdir="${src.test.java.dir}" destdir="${build.test.java.dir}" debug="${debug}"
-                classpath="${build.main.java.dir}:${java.class.path}" includeAntRuntime="false"/>
+                classpath="${build.main.java.dir}:${junit.dir}" includeAntRuntime="false"/>
     </target>
 
     <target name="dist-main" depends="compile-main" description="put main app to dist folder">
@@ -104,11 +98,37 @@
         <chmod file="${dist.test.script.dir}/${dist.test.script.file}" perm="ugo+x"/>
     </target>
 
+    <target name="run-main" depends="compile-main" description="run main program">
+        <java classname="${dist.main.java.main-class}" fork="true" dir="${build.dir}">
+            <env key="LD_LIBRARY_PATH" path="${build.main.native.dir}"/>
+            <classpath>
+                <pathelement path="${build.main.java.dir}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run-test" depends="compile-test" description="run test program">
+        <java classname="${dist.test.java.main-class}" fork="true" dir="${build.dir}">
+            <env key="LD_LIBRARY_PATH" path="${build.main.native.dir}"/>
+            <classpath>
+                <pathelement path="${build.test.java.dir}"/>
+                <pathelement path="${build.main.java.dir}"/>
+                <pathelement path="${junit.dir}"/>
+            </classpath>
+        </java>
+    </target>
+
     <target name="compile" depends="compile-main,compile-test" description="compile all sources"/>
     <target name="dist" depends="dist-main,dist-test" description="dist all binaries"/>
 
     <target name="clean" description="clean up">
         <delete dir="${dist.dir}"/>
         <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="update-jni" depends="compile-main-java" description="updates jni headers">
+        <javah destdir="${src.main.jni.dir}" force="yes" classpath="${build.main.java.dir}">
+            <class name="com.subbst.permissionsfix.core.PosixFilePermissions"/>
+        </javah>
     </target>
 </project>

@@ -91,7 +91,7 @@ public class FileListerTest {
     public void testFileListing3() throws IOException {
         // init
         File testFile = new File("testFile");
-        testFile.mkdir();
+        testFile.createNewFile();
 
         // testing
         FileLister tester = new FileLister(testFile);

@@ -59,8 +59,10 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         boxesPanel = new javax.swing.JPanel();
+        boxesPanelTitle = new javax.swing.JLabel();
         ownerRBox = new javax.swing.JCheckBox();
         groupRBox = new javax.swing.JCheckBox();
         othersRBox = new javax.swing.JCheckBox();
@@ -70,45 +72,91 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
         ownerXBox = new javax.swing.JCheckBox();
         groupXBox = new javax.swing.JCheckBox();
         othersXBox = new javax.swing.JCheckBox();
-        boxesPanelTitle = new javax.swing.JLabel();
         buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         setButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        boxesPanel.setLayout(new java.awt.GridLayout(3, 3));
-
-        ownerRBox.setText("Owner read");
-        boxesPanel.add(ownerRBox);
-
-        groupRBox.setText("Group read");
-        boxesPanel.add(groupRBox);
-
-        othersRBox.setText("Others read");
-        boxesPanel.add(othersRBox);
-
-        ownerWBox.setText("Owner write");
-        boxesPanel.add(ownerWBox);
-
-        groupWBox.setText("Group write");
-        boxesPanel.add(groupWBox);
-
-        othersWBox.setText("Others write");
-        boxesPanel.add(othersWBox);
-
-        ownerXBox.setText("Owner execute");
-        boxesPanel.add(ownerXBox);
-
-        groupXBox.setText("Group execute");
-        boxesPanel.add(groupXBox);
-
-        othersXBox.setText("Others execute");
-        boxesPanel.add(othersXBox);
+        boxesPanel.setLayout(new java.awt.GridBagLayout());
 
         boxesPanelTitle.setText("Select permissions:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        boxesPanel.add(boxesPanelTitle, gridBagConstraints);
 
-        buttonsPanel.setLayout(new java.awt.GridLayout());
+        ownerRBox.setText("Owner read");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(ownerRBox, gridBagConstraints);
+
+        groupRBox.setText("Group read");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(groupRBox, gridBagConstraints);
+
+        othersRBox.setText("Others read");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(othersRBox, gridBagConstraints);
+
+        ownerWBox.setText("Owner write");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(ownerWBox, gridBagConstraints);
+
+        groupWBox.setText("Group write");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(groupWBox, gridBagConstraints);
+
+        othersWBox.setText("Others write");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(othersWBox, gridBagConstraints);
+
+        ownerXBox.setText("Owner execute");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(ownerXBox, gridBagConstraints);
+
+        groupXBox.setText("Group execute");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(groupXBox, gridBagConstraints);
+
+        othersXBox.setText("Others execute");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        boxesPanel.add(othersXBox, gridBagConstraints);
+
+        buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -116,7 +164,7 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
                 cancelButtonActionPerformed(evt);
             }
         });
-        buttonsPanel.add(cancelButton);
+        buttonsPanel.add(cancelButton, new java.awt.GridBagConstraints());
 
         setButton.setText("Set");
         setButton.addActionListener(new java.awt.event.ActionListener() {
@@ -124,31 +172,27 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
                 setButtonActionPerformed(evt);
             }
         });
-        buttonsPanel.add(setButton);
+        buttonsPanel.add(setButton, new java.awt.GridBagConstraints());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(boxesPanelTitle)
-                            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(boxesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(28, 28, 28))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(boxesPanelTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

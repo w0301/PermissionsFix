@@ -114,7 +114,12 @@ public class ProgressDialog extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        progressBarPanel = new javax.swing.JPanel();
+        progressBarMsg = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
+        progressBarMsgTitle = new javax.swing.JLabel();
         errorListPanel = new javax.swing.JPanel();
         errorListTitle = new javax.swing.JLabel();
         errorListScroll = new javax.swing.JScrollPane();
@@ -122,39 +127,59 @@ public class ProgressDialog extends javax.swing.JDialog {
         buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
-        progressBarPanel = new javax.swing.JPanel();
-        progressBarMsg = new javax.swing.JLabel();
-        progressBar = new javax.swing.JProgressBar();
-        progressBarMsgTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        progressBarPanel.setLayout(new java.awt.GridBagLayout());
+
+        progressBarMsg.setText("progress msg");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 25, 0, 25);
+        progressBarPanel.add(progressBarMsg, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        progressBarPanel.add(progressBar, gridBagConstraints);
+
+        progressBarMsgTitle.setText("progress msg title:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        progressBarPanel.add(progressBarMsgTitle, gridBagConstraints);
+
+        errorListPanel.setLayout(new java.awt.GridBagLayout());
+
         errorListTitle.setText("Errors:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        errorListPanel.add(errorListTitle, gridBagConstraints);
 
         errorList.setModel(new javax.swing.DefaultListModel());
         errorListScroll.setViewportView(errorList);
 
-        javax.swing.GroupLayout errorListPanelLayout = new javax.swing.GroupLayout(errorListPanel);
-        errorListPanel.setLayout(errorListPanelLayout);
-        errorListPanelLayout.setHorizontalGroup(
-            errorListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(errorListPanelLayout.createSequentialGroup()
-                .addGroup(errorListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(errorListPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(errorListTitle))
-                    .addGroup(errorListPanelLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(errorListScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        errorListPanelLayout.setVerticalGroup(
-            errorListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(errorListPanelLayout.createSequentialGroup()
-                .addComponent(errorListTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(errorListScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 20);
+        errorListPanel.add(errorListScroll, gridBagConstraints);
+
+        buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +187,10 @@ public class ProgressDialog extends javax.swing.JDialog {
                 cancelButtonActionPerformed(evt);
             }
         });
-        buttonsPanel.add(cancelButton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        buttonsPanel.add(cancelButton, gridBagConstraints);
 
         okButton.setText("Ok");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -170,36 +198,7 @@ public class ProgressDialog extends javax.swing.JDialog {
                 okButtonActionPerformed(evt);
             }
         });
-        buttonsPanel.add(okButton);
-
-        progressBarMsg.setText("progress msg");
-
-        progressBarMsgTitle.setText("progress msg title:");
-
-        javax.swing.GroupLayout progressBarPanelLayout = new javax.swing.GroupLayout(progressBarPanel);
-        progressBarPanel.setLayout(progressBarPanelLayout);
-        progressBarPanelLayout.setHorizontalGroup(
-            progressBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(progressBarPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(progressBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(progressBarPanelLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(progressBarMsg))
-                    .addComponent(progressBarMsgTitle)
-                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        progressBarPanelLayout.setVerticalGroup(
-            progressBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(progressBarPanelLayout.createSequentialGroup()
-                .addComponent(progressBarMsgTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(progressBarMsg)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        buttonsPanel.add(okButton, new java.awt.GridBagConstraints());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,20 +207,20 @@ public class ProgressDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
-                    .addComponent(errorListPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(progressBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(errorListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                    .addComponent(progressBarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                    .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(progressBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(progressBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(errorListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(errorListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 

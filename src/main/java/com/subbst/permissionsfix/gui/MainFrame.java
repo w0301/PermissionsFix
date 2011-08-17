@@ -21,8 +21,6 @@ package com.subbst.permissionsfix.gui;
 
 import java.io.File;
 
-import javax.swing.Icon;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -40,51 +38,51 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        fileNameField = new javax.swing.JTextField();
+        recursiveLoadBox = new javax.swing.JCheckBox();
+        showChooserButton = new javax.swing.JButton();
+        loadFilesButton = new javax.swing.JButton();
+        alterSelectedButton = new javax.swing.JButton();
+        saveFilesButton = new javax.swing.JButton();
+        alterFilterButton = new javax.swing.JButton();
+        filesTableScroll = new javax.swing.JScrollPane();
+        filesTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jCheckBox1.setText("Recursive");
+        recursiveLoadBox.setText("Recursive");
 
-        jButton1.setText("...");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        showChooserButton.setText("...");
+        showChooserButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                showChooserButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Load");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        loadFilesButton.setText("Load");
+        loadFilesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                loadFilesButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Alter selected...");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        alterSelectedButton.setText("Alter selected...");
+        alterSelectedButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                alterSelectedButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Save permissions");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        saveFilesButton.setText("Save permissions");
+        saveFilesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                saveFilesButtonActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Alter by filter...");
+        alterFilterButton.setText("Alter by filter...");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        filesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -92,10 +90,10 @@ public class MainFrame extends javax.swing.JFrame {
 
             }
         ));
-        jTable1.setColumnSelectionAllowed(true);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable1);
-        jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        filesTable.setColumnSelectionAllowed(true);
+        filesTable.getTableHeader().setReorderingAllowed(false);
+        filesTableScroll.setViewportView(filesTable);
+        filesTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,21 +102,21 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+                    .addComponent(filesTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+                        .addComponent(fileNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(showChooserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(loadFilesButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jCheckBox1))
+                        .addComponent(recursiveLoadBox))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3)
+                        .addComponent(alterSelectedButton)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton5)
+                        .addComponent(alterFilterButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
-                        .addComponent(jButton4)))
+                        .addComponent(saveFilesButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -126,26 +124,26 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showChooserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jCheckBox1))
+                    .addComponent(loadFilesButton)
+                    .addComponent(recursiveLoadBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                .addComponent(filesTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton5)
-                    .addComponent(jButton4))
+                    .addComponent(alterSelectedButton)
+                    .addComponent(alterFilterButton)
+                    .addComponent(saveFilesButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+private void showChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showChooserButtonActionPerformed
     // showing file chooser dialog
     JFileChooser chooser = new JFileChooser();
     chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -153,13 +151,13 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     // handling output from chooser dialog
     if (retVal == JFileChooser.APPROVE_OPTION) {
-        jTextField1.setText(chooser.getSelectedFile().getAbsolutePath());
+        fileNameField.setText(chooser.getSelectedFile().getAbsolutePath());
     }
-}//GEN-LAST:event_jButton1ActionPerformed
+}//GEN-LAST:event_showChooserButtonActionPerformed
 
-private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+private void loadFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFilesButtonActionPerformed
     // creating file lister (actually a model for table)
-    String fileName = jTextField1.getText();
+    String fileName = fileNameField.getText();
     final FileListerTableModel newModel = new FileListerTableModel(new File(fileName));
 
     // setting up progress dialog
@@ -208,7 +206,7 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     Thread dialogThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            newModel.loadFiles(jCheckBox1.isSelected());
+            newModel.loadFiles(recursiveLoadBox.isSelected());
         }
     });
     dialogThread.start();
@@ -221,18 +219,18 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     else {
         // setting new model for table
         newModel.removeListener(newListener);
-        jTable1.setModel(newModel);
-        tableModel = newModel;
+        filesTable.setModel(newModel);
+        filesTableModel = newModel;
     }
-}//GEN-LAST:event_jButton2ActionPerformed
+}//GEN-LAST:event_loadFilesButtonActionPerformed
 
-private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    if (tableModel == null) {
-        JOptionPane.showMessageDialog(this, "You have to load files first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
+private void alterSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterSelectedButtonActionPerformed
+    if (filesTableModel == null) {
+        JOptionPane.showMessageDialog(this, "You have to load files first.", "Information", JOptionPane.INFORMATION_MESSAGE);
         return;
     }
-    if (jTable1.getSelectedRowCount() == 0) {
-        JOptionPane.showMessageDialog(this, "You have to select rows first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
+    if (filesTable.getSelectedRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "You have to select rows first.", "Information", JOptionPane.INFORMATION_MESSAGE);
         return;
     }
 
@@ -242,12 +240,12 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     // getting return code of dialog and altering permissions
     if (dlg.getExitCode() == PermissionsAlterDialog.OK_EXIT) {
-        this.tableModel.alterPermissions(jTable1.getSelectedRows(), dlg.getDialogPermissions());
+        this.filesTableModel.alterPermissions(filesTable.getSelectedRows(), dlg.getDialogPermissions());
     }
-}//GEN-LAST:event_jButton3ActionPerformed
+}//GEN-LAST:event_alterSelectedButtonActionPerformed
 
-private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    if (tableModel == null) {
+private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFilesButtonActionPerformed
+    if (filesTableModel == null) {
         JOptionPane.showMessageDialog(this, "You have to load files and alter them first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
         return;
     }
@@ -290,13 +288,13 @@ private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             dlg.setProgressMsg("All permissions are saved");
         }
     };
-    tableModel.addListener(newListener);
+    filesTableModel.addListener(newListener);
 
     // saving permissions (in separate thread)
     Thread dialogThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            tableModel.saveAllPermissions();
+            filesTableModel.saveAllPermissions();
         }
     });
     dialogThread.start();
@@ -304,22 +302,22 @@ private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     // showing progress dialog and handling its output
     dlg.setVisible(true);
     if (dlg.getExitCode() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
-        tableModel.stopFilesSaving();
+        filesTableModel.stopFilesSaving();
     }
-    tableModel.removeListener(newListener);
-}//GEN-LAST:event_jButton4ActionPerformed
+    filesTableModel.removeListener(newListener);
+}//GEN-LAST:event_saveFilesButtonActionPerformed
 
-    private FileListerTableModel tableModel = null;
+    private FileListerTableModel filesTableModel = null;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton alterFilterButton;
+    private javax.swing.JButton alterSelectedButton;
+    private javax.swing.JTextField fileNameField;
+    private javax.swing.JTable filesTable;
+    private javax.swing.JScrollPane filesTableScroll;
+    private javax.swing.JButton loadFilesButton;
+    private javax.swing.JCheckBox recursiveLoadBox;
+    private javax.swing.JButton saveFilesButton;
+    private javax.swing.JButton showChooserButton;
     // End of variables declaration//GEN-END:variables
 }

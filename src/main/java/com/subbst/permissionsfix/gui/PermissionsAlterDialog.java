@@ -70,9 +70,10 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
         ownerXBox = new javax.swing.JCheckBox();
         groupXBox = new javax.swing.JCheckBox();
         othersXBox = new javax.swing.JCheckBox();
-        titleLabel = new javax.swing.JLabel();
-        setButton = new javax.swing.JButton();
+        boxesPanelTitle = new javax.swing.JLabel();
+        buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
+        setButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -105,14 +106,9 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
         othersXBox.setText("Others execute");
         boxesPanel.add(othersXBox);
 
-        titleLabel.setText("Select permissions:");
+        boxesPanelTitle.setText("Select permissions:");
 
-        setButton.setText("Set");
-        setButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setButtonActionPerformed(evt);
-            }
-        });
+        buttonsPanel.setLayout(new java.awt.GridLayout());
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -120,36 +116,42 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
                 cancelButtonActionPerformed(evt);
             }
         });
+        buttonsPanel.add(cancelButton);
+
+        setButton.setText("Set");
+        setButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setButtonActionPerformed(evt);
+            }
+        });
+        buttonsPanel.add(setButton);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(titleLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(283, Short.MAX_VALUE)
-                .addComponent(cancelButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(setButton)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(boxesPanelTitle)
+                            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(titleLabel)
+                .addComponent(boxesPanelTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cancelButton)
-                    .addComponent(setButton))
-                .addContainerGap())
+                .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -165,9 +167,10 @@ private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     setVisible(false);
 }//GEN-LAST:event_cancelButtonActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel boxesPanel;
+    private javax.swing.JLabel boxesPanelTitle;
+    private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelButton;
     private javax.swing.JCheckBox groupRBox;
     private javax.swing.JCheckBox groupWBox;
@@ -179,6 +182,5 @@ private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JCheckBox ownerWBox;
     private javax.swing.JCheckBox ownerXBox;
     private javax.swing.JButton setButton;
-    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

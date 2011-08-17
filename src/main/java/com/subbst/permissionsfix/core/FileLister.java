@@ -270,7 +270,7 @@ public class FileLister {
         fireAftersave();
     }
 
-    public synchronized void stopFilesSaving() {
+    public void stopFilesSaving() {
         this.stopSaving.set(true);
     }
 

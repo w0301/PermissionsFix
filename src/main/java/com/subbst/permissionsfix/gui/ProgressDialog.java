@@ -35,52 +35,44 @@ public class ProgressDialog extends javax.swing.JDialog {
     }
 
     public void useOkButton(boolean val) {
-        this.jButton1.setVisible(val);
+        this.okButton.setVisible(val);
     }
 
     public void enableOkButton(boolean val) {
-        this.jButton1.setEnabled(val);
+        this.okButton.setEnabled(val);
     }
 
     public void useCancelButton(boolean val) {
-        this.jButton2.setVisible(val);
+        this.cancelButton.setVisible(val);
     }
 
     public void enableCancelButton(boolean val) {
-        this.jButton2.setEnabled(val);
+        this.cancelButton.setEnabled(val);
     }
 
     public void useErrorList(boolean val) {
-        this.jPanel1.setVisible(val);
+        this.errorListPanel.setVisible(val);
     }
 
     public void addErrorMsg(String msg) {
-        DefaultListModel model = (DefaultListModel) this.jList1.getModel();
+        DefaultListModel model = (DefaultListModel) this.errorList.getModel();
         model.addElement(msg);
     }
 
     public void setProgressBusy(boolean val) {
-        this.jProgressBar1.setIndeterminate(val);
-    }
-
-    public int getProgress() {
-        return this.jProgressBar1.getValue();
-    }
-
-    public boolean isFinished() {
-        return this.progressFinished;
+        this.progressBar.setIndeterminate(val);
     }
 
     public void setProgressMinimum(int n) {
-        this.jProgressBar1.setMinimum(n);
+        this.progressBar.setMinimum(n);
     }
 
     public void setProgressMaximum(int n) {
-        this.jProgressBar1.setMaximum(n);
+        this.progressBar.setMaximum(n);
     }
 
     public void setProgress(int n) {
-        this.jProgressBar1.setValue(n);
+        this.progressBar.setValue(n);
     }
 
     public void setFinished(boolean val) {
@@ -88,11 +80,31 @@ public class ProgressDialog extends javax.swing.JDialog {
     }
 
     public void setProgressMsgTitle(String title) {
-        this.jLabel1.setText(title);
+        this.progressBarMsgTitle.setText(title);
     }
 
     public void setProgressMsg(String msg) {
-        this.jLabel2.setText(msg);
+        this.progressBarMsg.setText(msg);
+    }
+
+    public boolean isProgressBusy() {
+        return this.progressBar.isIndeterminate();
+    }
+
+    public int getProgressMinimum() {
+        return this.progressBar.getMinimum();
+    }
+
+    public int getProgressMaximum() {
+        return this.progressBar.getMaximum();
+    }
+
+    public int getProgress() {
+        return this.progressBar.getValue();
+    }
+
+    public boolean isFinished() {
+        return this.progressFinished;
     }
 
     public int getExitCode() {
@@ -103,89 +115,89 @@ public class ProgressDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
-        jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+        errorListPanel = new javax.swing.JPanel();
+        errorListTitle = new javax.swing.JLabel();
+        errorListScroll = new javax.swing.JScrollPane();
+        errorList = new javax.swing.JList();
+        buttonsPanel = new javax.swing.JPanel();
+        cancelButton = new javax.swing.JButton();
+        okButton = new javax.swing.JButton();
+        progressBarPanel = new javax.swing.JPanel();
+        progressBarMsg = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
+        progressBarMsgTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel3.setText("Errors:");
+        errorListTitle.setText("Errors:");
 
-        jList1.setModel(new javax.swing.DefaultListModel());
-        jScrollPane1.setViewportView(jList1);
+        errorList.setModel(new javax.swing.DefaultListModel());
+        errorListScroll.setViewportView(errorList);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout errorListPanelLayout = new javax.swing.GroupLayout(errorListPanel);
+        errorListPanel.setLayout(errorListPanelLayout);
+        errorListPanelLayout.setHorizontalGroup(
+            errorListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(errorListPanelLayout.createSequentialGroup()
+                .addGroup(errorListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(errorListPanelLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(errorListTitle))
+                    .addGroup(errorListPanelLayout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)))
+                        .addComponent(errorListScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel3)
+        errorListPanelLayout.setVerticalGroup(
+            errorListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(errorListPanelLayout.createSequentialGroup()
+                .addComponent(errorListTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
+                .addComponent(errorListScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE))
         );
 
-        jButton2.setText("Cancel");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setText("Cancel");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton2);
+        buttonsPanel.add(cancelButton);
 
-        jButton1.setText("Ok");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        okButton.setText("Ok");
+        okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                okButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1);
+        buttonsPanel.add(okButton);
 
-        jLabel2.setText("progress msg");
+        progressBarMsg.setText("progress msg");
 
-        jLabel1.setText("progress msg title:");
+        progressBarMsgTitle.setText("progress msg title:");
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout progressBarPanelLayout = new javax.swing.GroupLayout(progressBarPanel);
+        progressBarPanel.setLayout(progressBarPanelLayout);
+        progressBarPanelLayout.setHorizontalGroup(
+            progressBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(progressBarPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(progressBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(progressBarPanelLayout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(jLabel2))
-                    .addComponent(jLabel1)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
+                        .addComponent(progressBarMsg))
+                    .addComponent(progressBarMsgTitle)
+                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+        progressBarPanelLayout.setVerticalGroup(
+            progressBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(progressBarPanelLayout.createSequentialGroup()
+                .addComponent(progressBarMsgTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(progressBarMsg)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -196,47 +208,47 @@ public class ProgressDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(buttonsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+                    .addComponent(errorListPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(progressBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(progressBarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(errorListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
     this.exitCode = OK_EXIT;
     setVisible(false);
-}//GEN-LAST:event_jButton1ActionPerformed
+}//GEN-LAST:event_okButtonActionPerformed
 
-private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
     this.exitCode = CANCEL_EXIT;
     setVisible(false);
-}//GEN-LAST:event_jButton2ActionPerformed
+}//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JList jList1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JProgressBar jProgressBar1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel buttonsPanel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JList errorList;
+    private javax.swing.JPanel errorListPanel;
+    private javax.swing.JScrollPane errorListScroll;
+    private javax.swing.JLabel errorListTitle;
+    private javax.swing.JButton okButton;
+    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JLabel progressBarMsg;
+    private javax.swing.JLabel progressBarMsgTitle;
+    private javax.swing.JPanel progressBarPanel;
     // End of variables declaration//GEN-END:variables
 }

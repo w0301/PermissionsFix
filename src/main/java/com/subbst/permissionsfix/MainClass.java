@@ -21,9 +21,9 @@ package com.subbst.permissionsfix;
 
 import java.awt.EventQueue;
 
-import com.subbst.permissionsfix.gui.MainFrame;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
+import com.subbst.permissionsfix.gui.MainFrame;
 
 /**
  * Entry point to a program.

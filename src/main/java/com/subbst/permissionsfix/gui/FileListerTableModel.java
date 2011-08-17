@@ -30,6 +30,7 @@ import javax.swing.table.TableModel;
 
 import com.subbst.permissionsfix.core.FileLister;
 import com.subbst.permissionsfix.core.PosixFilePermission;
+import java.io.FileFilter;
 
 /**
  * Model for JTable component.
@@ -38,7 +39,6 @@ public class FileListerTableModel extends FileLister implements TableModel {
 
     private static final int COLUMNS_COUNT = 3;
     private static final String[] columnsNames;
-
 
     private List<TableModelListener> tableListeners = new ArrayList<TableModelListener>();
 
@@ -62,6 +62,18 @@ public class FileListerTableModel extends FileLister implements TableModel {
 
     public FileListerTableModel(File baseFile) {
         super(baseFile);
+    }
+
+    @Override
+    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms) {
+        super.alterPermissions(indexes, perms);
+        fireTableChanged();
+    }
+
+    @Override
+    public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms) {
+        super.alterPermissions(filter, perms);
+        fireTableChanged();
     }
 
     @Override

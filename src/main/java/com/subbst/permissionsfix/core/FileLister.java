@@ -238,6 +238,13 @@ public class FileLister {
         }
     }
 
+    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms) {
+        // check all file entries and if it is desired change permissions
+        for (int i : indexes) {
+            this.fileList.get(i).alterPermissions(perms);
+        }
+    }
+
     public void saveAllPermissions() {
         // reseting loading stoper
         resetSavingStopper();

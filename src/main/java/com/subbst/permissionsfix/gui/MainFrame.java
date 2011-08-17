@@ -25,6 +25,8 @@ import javax.swing.JFileChooser;
 
 import com.subbst.permissionsfix.core.FileListerAdapter;
 import com.subbst.permissionsfix.core.FileListerListener;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -66,6 +68,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton3.setText("Alter selected...");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Save permissions");
 
@@ -212,6 +219,26 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         tableModel = newModel;
     }
 }//GEN-LAST:event_jButton2ActionPerformed
+
+private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    if (tableModel == null) {
+        JOptionPane.showMessageDialog(this, "You have to load files first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+    if (jTable1.getSelectedRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "You have to select rows first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+
+    // showing dialog
+    final PermissionsAlterDialog dlg = new PermissionsAlterDialog(this, "Alter permissions");
+    dlg.setVisible(true);
+
+    // getting return code of dialog and altering permissions
+    if (dlg.getExitCode() == PermissionsAlterDialog.OK_EXIT) {
+        this.tableModel.alterPermissions(jTable1.getSelectedRows(), dlg.getDialogPermissions());
+    }
+}//GEN-LAST:event_jButton3ActionPerformed
 
     private FileListerTableModel tableModel = null;
 

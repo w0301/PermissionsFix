@@ -77,6 +77,12 @@ public class FileListerTableModel extends FileLister implements TableModel {
     }
 
     @Override
+    public void saveAllPermissions() {
+        super.saveAllPermissions();
+        fireTableChanged();
+    }
+
+    @Override
     public void addTableModelListener(TableModelListener tl) {
         this.tableListeners.add(tl);
     }

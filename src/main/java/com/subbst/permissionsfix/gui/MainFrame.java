@@ -21,12 +21,13 @@ package com.subbst.permissionsfix.gui;
 
 import java.io.File;
 
+import javax.swing.Icon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import com.subbst.permissionsfix.core.FileListerAdapter;
 import com.subbst.permissionsfix.core.FileListerListener;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -75,6 +76,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         jButton4.setText("Save permissions");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Alter by filter...");
 
@@ -239,6 +245,69 @@ private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         this.tableModel.alterPermissions(jTable1.getSelectedRows(), dlg.getDialogPermissions());
     }
 }//GEN-LAST:event_jButton3ActionPerformed
+
+private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    if (tableModel == null) {
+        JOptionPane.showMessageDialog(this, "You have to load files and alter them first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+
+    // firstly ask if user really wants to save parmissions
+    int ret = JOptionPane.showOptionDialog(this, "Do you reall want to save permissions?", "Save permissions?",
+                                           JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+    if(ret != JOptionPane.YES_OPTION) return;
+
+    // setup progress dialog
+    final ProgressDialog dlg = new ProgressDialog(this, "Saving files");
+    final FileListerListener newListener = new FileListerAdapter() {
+        private int lastProgress = 0;
+
+        @Override
+        public void presaveAction(int filesCount) {
+            dlg.enableOkButton(false);
+            dlg.setProgressBusy(false);
+            dlg.setProgress(0);
+            dlg.setProgressMaximum(filesCount);
+            dlg.setProgressMsg("");
+            dlg.setProgressMsgTitle("Currently saving:");
+        }
+
+        @Override
+        public void fileSavingAction(String fileName) {
+            dlg.setProgressMsg("Saving: " + fileName);
+            dlg.setProgress(++this.lastProgress);
+        }
+
+        @Override
+        public void fileSavingFailedAction(String fileName) {
+            dlg.addErrorMsg("Failed to save: " + fileName);
+        }
+
+        @Override
+        public void aftersaveAction() {
+            dlg.enableOkButton(true);
+            dlg.setFinished(true);
+            dlg.setProgressMsg("All permissions are saved");
+        }
+    };
+    tableModel.addListener(newListener);
+
+    // saving permissions (in separate thread)
+    Thread dialogThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            tableModel.saveAllPermissions();
+        }
+    });
+    dialogThread.start();
+
+    // showing progress dialog and handling its output
+    dlg.setVisible(true);
+    if (dlg.getExitCode() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
+        tableModel.stopFilesSaving();
+    }
+    tableModel.removeListener(newListener);
+}//GEN-LAST:event_jButton4ActionPerformed
 
     private FileListerTableModel tableModel = null;
 

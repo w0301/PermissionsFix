@@ -94,9 +94,10 @@ public class FileLister {
         // getting files in directory if possible and necessary
         if (recursive && file.isDirectory()) {
             File[] files = file.listFiles();
+            if (files == null) return retList;
             for (File f : files) {
                 List<File> toAdd = listFiles(f, true);
-                if (shouldStopLoading()) return null;
+                if (shouldStopLoading() || toAdd == null) return null;
                 retList.addAll(toAdd);
             }
         }
@@ -200,7 +201,7 @@ public class FileLister {
 
         // create teporaly list with all files to by loaded
         List<File> filesToLoad = listFiles(this.baseFile, recursive);
-        if (shouldStopLoading()) return;
+        if (shouldStopLoading() || filesToLoad == null) return;
 
         // inform listeners that loading will start soon
         firePreload(filesToLoad.size());

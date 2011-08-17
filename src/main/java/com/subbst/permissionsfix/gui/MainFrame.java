@@ -178,6 +178,11 @@ private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
 
         @Override
+        public void fileLoadingFailedAction(String fileName) {
+            dlg.addErrorMsg("Failed to load: " + fileName);
+        }
+
+        @Override
         public void afterloadAction() {
             dlg.enableOkButton(true);
             dlg.setFinished(true);

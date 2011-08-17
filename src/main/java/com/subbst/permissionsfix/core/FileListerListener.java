@@ -27,10 +27,22 @@ import java.util.EventListener;
  */
 public interface FileListerListener extends EventListener {
 
+    public void prelistingAction(String fileName, boolean recursive);
+
     public void preloadAction(int filesCount);
 
     public void afterloadAction();
 
-    public void fileLoadedAction(FileLister.ListEntry file);
+    public void fileLoadingAction(String fileName);
+
+    public void fileLoadingFailedAction(String fileName);
+
+    public void presaveAction(int filesCount);
+
+    public void aftersaveAction();
+
+    public void fileSavingAction(String fileName);
+
+    public void fileSavingFailedAction(String fileName);
 
 }

@@ -24,6 +24,7 @@ import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class that is used for listing files and their permissions.
@@ -77,13 +78,16 @@ public class FileLister {
     }
 
     private final File baseFile;
+    private AtomicBoolean stopLoading = new AtomicBoolean(false);
+    private AtomicBoolean stopSaving = new AtomicBoolean(false);
 
-    private List<FileListerListener> listenersList = new ArrayList<FileListerListener>();
     private List<ListEntry> fileList = new ArrayList<ListEntry>();
-    private List<PosixFilePermissionsException> loadingExceptions = new ArrayList<PosixFilePermissionsException>();
-    private List<PosixFilePermissionsException> savingExceptions = new ArrayList<PosixFilePermissionsException>();
+    private List<FileListerListener> fileListerListeners = new ArrayList<FileListerListener>();
 
-    private static List<File> listFiles(File file, boolean recursive) {
+
+    private List<File> listFiles(File file, boolean recursive) {
+        if (shouldStopLoading()) return null;
+
         List<File> retList = new ArrayList<File>();
         retList.add(file);
 
@@ -91,10 +95,28 @@ public class FileLister {
         if (recursive && file.isDirectory()) {
             File[] files = file.listFiles();
             for (File f : files) {
-                retList.addAll(listFiles(f, true));
+                List<File> toAdd = listFiles(f, true);
+                if (shouldStopLoading()) return null;
+                retList.addAll(toAdd);
             }
         }
         return retList;
+    }
+
+    private boolean shouldStopLoading() {
+        return this.stopLoading.get();
+    }
+
+    private void resetLoadingStopper() {
+        this.stopLoading.set(false);
+    }
+
+    private boolean shouldStopSaving() {
+        return this.stopSaving.get();
+    }
+
+    private void resetSavingStopper() {
+        this.stopSaving.set(false);
     }
 
     public FileLister(File file) {
@@ -103,65 +125,107 @@ public class FileLister {
     }
 
     public void addListener(FileListerListener listener) {
-        this.listenersList.add(listener);
+        this.fileListerListeners.add(listener);
     }
 
     public void removeListener(FileListerListener listener) {
-        this.listenersList.remove(listener);
+        this.fileListerListeners.remove(listener);
     }
 
     public FileListerListener[] getListeners() {
-        return this.listenersList.toArray(new FileListerListener[0]);
+        return this.fileListerListeners.toArray(new FileListerListener[0]);
+    }
+
+    public void firePrelisting(String fileName, boolean recursive) {
+        for (FileListerListener l : this.fileListerListeners) {
+            l.prelistingAction(fileName, recursive);
+        }
     }
 
     public void firePreload(int filesCount) {
-        for (FileListerListener l : this.listenersList) {
+        for (FileListerListener l : this.fileListerListeners) {
             l.preloadAction(filesCount);
         }
     }
 
     public void fireAfterload() {
-        for (FileListerListener l : this.listenersList) {
+        for (FileListerListener l : this.fileListerListeners) {
             l.afterloadAction();
         }
     }
 
-    public void fireFileLoaded(ListEntry le) {
-        for (FileListerListener l : this.listenersList) {
-            l.fileLoadedAction(le);
+    public void fireFileLoading(String fileName) {
+        for (FileListerListener l : this.fileListerListeners) {
+            l.fileLoadingAction(fileName);
+        }
+    }
+
+    public void fireFileLoadingFailed(String fileName) {
+        for (FileListerListener l : this.fileListerListeners) {
+            l.fileLoadingFailedAction(fileName);
+        }
+    }
+
+    public void firePresave(int filesCount) {
+        for (FileListerListener l : this.fileListerListeners) {
+            l.presaveAction(filesCount);
+        }
+    }
+
+    public void fireAftersave() {
+        for (FileListerListener l : this.fileListerListeners) {
+            l.aftersaveAction();
+        }
+    }
+
+    public void fireFileSaving(String fileName) {
+        for (FileListerListener l : this.fileListerListeners) {
+            l.fileSavingAction(fileName);
+        }
+    }
+
+    public void fireFileSavingFailed(String fileName) {
+        for (FileListerListener l : this.fileListerListeners) {
+            l.fileSavingFailedAction(fileName);
         }
     }
 
     public void loadFiles(boolean recursive) {
-        // firstly clear exception list and file list
+        // firstly clear file list and reset stopper
         this.fileList.clear();
-        this.loadingExceptions.clear();
+        resetLoadingStopper();
+
+        // inform about listing files
+        firePrelisting(this.baseFile.getAbsolutePath(), recursive);
 
         // create teporaly list with all files to by loaded
         List<File> filesToLoad = listFiles(this.baseFile, recursive);
+        if (shouldStopLoading()) return;
 
         // inform listeners that loading will start soon
         firePreload(filesToLoad.size());
 
         // fill persistant list and loading permissions to it
         for (File f : filesToLoad) {
-            ListEntry newEntry = null;
+            if (shouldStopLoading()) break;
             try {
+                // inform about loading
+                fireFileLoading(f.getAbsolutePath());
+
                 // loading file
-                newEntry = new ListEntry(f);
-                this.fileList.add(newEntry);
+                this.fileList.add(new ListEntry(f));
             }
             catch (PosixFilePermissionsException ex) {
-                this.loadingExceptions.add(ex);
-            }
-            finally {
-                // do this even if loading failed, in which case newEntry == null
-                fireFileLoaded(newEntry);
+                fireFileLoadingFailed(ex.getFileName());
             }
         }
 
         // inform listeners that loading ended
         fireAfterload();
+    }
+
+    public void stopFilesLoading() {
+        this.stopLoading.set(true);
     }
 
     public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms) {
@@ -174,28 +238,36 @@ public class FileLister {
     }
 
     public void saveAllPermissions() {
-        // firstly clear exception list
-        this.savingExceptions.clear();
+        // reseting loading stoper
+        resetSavingStopper();
+
+        // inform that saving started
+        firePresave(this.fileList.size());
+
         for (ListEntry le : this.fileList) {
+            if(shouldStopSaving()) break;
             try {
+                // inform about saving
+                fireFileSaving(le.getFile().getAbsolutePath());
+
+                // save permissions
                 le.savePermissions();
             }
             catch (PosixFilePermissionsException ex) {
-                this.savingExceptions.add(ex);
+                fireFileLoadingFailed(ex.getFileName());
             }
         }
+
+        // inform that saving ended (maybe with error)
+        fireAftersave();
+    }
+
+    public synchronized void stopFilesSaving() {
+        this.stopSaving.set(true);
     }
 
     public final List<ListEntry> getFileList() {
         return this.fileList;
-    }
-
-    public final List<PosixFilePermissionsException> getLoadingExceptions() {
-        return this.loadingExceptions;
-    }
-
-    public final List<PosixFilePermissionsException> getSavingExceptions() {
-        return this.savingExceptions;
     }
 
 }

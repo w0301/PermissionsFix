@@ -51,11 +51,10 @@ public class FileListerTableModel extends FileLister implements TableModel {
     }
 
     private static String permissionsSetToString(Set<PosixFilePermission> perms, boolean isDir) {
+        if (perms == null) return "not set";
         StringBuilder retStr = new StringBuilder("---------");
-        if (perms != null) {
-            for (PosixFilePermission perm : perms) {
-                retStr.setCharAt(perm.getPosition(), perm.getSymbol());
-            }
+        for (PosixFilePermission perm : perms) {
+            retStr.setCharAt(perm.getPosition(), perm.getSymbol());
         }
         if(isDir) retStr.insert(0, 'd');
         return retStr.toString();

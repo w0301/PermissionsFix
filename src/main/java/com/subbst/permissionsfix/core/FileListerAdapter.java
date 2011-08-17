@@ -29,6 +29,10 @@ package com.subbst.permissionsfix.core;
 public class FileListerAdapter implements FileListerListener {
 
     @Override
+    public void prelistingAction(String fileName, boolean recursive) {
+    }
+
+    @Override
     public void preloadAction(int filesCount) {
     }
 
@@ -37,7 +41,28 @@ public class FileListerAdapter implements FileListerListener {
     }
 
     @Override
-    public void fileLoadedAction(FileLister.ListEntry file) {
+    public void fileLoadingFailedAction(String fileName) {
+    }
+
+    @Override
+    public void fileLoadingAction(String fileName) {
+
+    }
+
+    @Override
+    public void presaveAction(int filesCount) {
+    }
+
+    @Override
+    public void aftersaveAction() {
+    }
+
+    @Override
+    public void fileSavingAction(String fileName) {
+    }
+
+    @Override
+    public void fileSavingFailedAction(String fileName) {
     }
 
 }

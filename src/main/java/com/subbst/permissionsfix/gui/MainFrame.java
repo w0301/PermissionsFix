@@ -23,6 +23,9 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import com.subbst.permissionsfix.core.FileListerAdapter;
+import com.subbst.permissionsfix.core.FileListerListener;
+
 public class MainFrame extends javax.swing.JFrame {
 
     public MainFrame(String title) {
@@ -45,8 +48,6 @@ public class MainFrame extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextField1.setRequestFocusEnabled(false);
 
         jCheckBox1.setText("Recursive");
 
@@ -132,9 +133,12 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    // showing file chooser dialog
     JFileChooser chooser = new JFileChooser();
     chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     int retVal = chooser.showOpenDialog(this);
+
+    // handling output from chooser dialog
     if (retVal == JFileChooser.APPROVE_OPTION) {
         jTextField1.setText(chooser.getSelectedFile().getAbsolutePath());
     }
@@ -143,13 +147,65 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     // creating file lister (actually a model for table)
     String fileName = jTextField1.getText();
-    tableModel = new FileListerTableModel(new File(fileName));
+    final FileListerTableModel newModel = new FileListerTableModel(new File(fileName));
 
-    // loading file - TODO: events in FileLister to show progress bar
-    tableModel.loadFiles(jCheckBox1.isSelected());
+    // setting up progress dialog
+    final ProgressDialog dlg = new ProgressDialog(this, "Loading files");
+    final FileListerListener newListener = new FileListerAdapter() {
+        private int lastProgress = 0;
 
-    // setting new model for table
-    jTable1.setModel(tableModel);
+        @Override
+        public void prelistingAction(String fileName, boolean recursive) {
+            dlg.enableOkButton(false);
+            dlg.setProgressBusy(true);
+            dlg.setProgressMsgTitle("Currently loading:");
+            dlg.setProgressMsg("Listing directory " + fileName);
+        }
+
+        @Override
+        public void preloadAction(int filesCount) {
+            dlg.enableOkButton(false);
+            dlg.setProgressBusy(false);
+            dlg.setProgress(0);
+            dlg.setProgressMaximum(filesCount);
+            dlg.setProgressMsg("");
+        }
+
+        @Override
+        public void fileLoadingAction(String fileName) {
+            dlg.setProgressMsg("Loading: " + fileName);
+            dlg.setProgress(++this.lastProgress);
+        }
+
+        @Override
+        public void afterloadAction() {
+            dlg.enableOkButton(true);
+            dlg.setFinished(true);
+            dlg.setProgressMsg("All files are loaded");
+        }
+    };
+    newModel.addListener(newListener);
+
+    // loading files
+    Thread dialogThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            newModel.loadFiles(jCheckBox1.isSelected());
+        }
+    });
+    dialogThread.start();
+
+    // showing dialog and handling its output
+    dlg.setVisible(true);
+    if (dlg.getExitCode() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
+        newModel.stopFilesLoading();
+    }
+    else {
+        // setting new model for table
+        newModel.removeListener(newListener);
+        jTable1.setModel(newModel);
+        tableModel = newModel;
+    }
 }//GEN-LAST:event_jButton2ActionPerformed
 
     private FileListerTableModel tableModel = null;

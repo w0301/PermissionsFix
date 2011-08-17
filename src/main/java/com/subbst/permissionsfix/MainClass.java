@@ -19,8 +19,11 @@
  */
 package com.subbst.permissionsfix;
 
-import com.subbst.permissionsfix.gui.MainFrame;
 import java.awt.EventQueue;
+
+import com.subbst.permissionsfix.gui.MainFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * Entry point to a program.
@@ -36,6 +39,14 @@ public class MainClass {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // setting platform look and feel
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception e) {
+           System.err.println("Unable to load platform look and feel. Using default one.");
+        }
+
         // running swing frame
         EventQueue.invokeLater(new Runnable() {
             @Override

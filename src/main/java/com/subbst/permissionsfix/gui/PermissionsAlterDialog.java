@@ -23,17 +23,21 @@ import java.awt.Frame;
 import java.io.FileFilter;
 import java.util.EnumSet;
 import java.util.Set;
-
-import com.subbst.permissionsfix.core.FileListerFilter;
-import com.subbst.permissionsfix.core.PosixFilePermission;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import com.subbst.permissionsfix.core.FileLister;
+import com.subbst.permissionsfix.core.FileListerFilter;
+import com.subbst.permissionsfix.core.PosixFilePermission;
 
 public class PermissionsAlterDialog extends BaseDialog {
 
     public PermissionsAlterDialog(Frame parent, String title) {
         super(parent, title);
         initComponents();
+        alterTypeBoxes.add(replacePermissionsBox);
+        alterTypeBoxes.add(addPermissionsBox);
+        alterTypeBoxes.add(removePermissionsBox);
     }
 
     public void usePatternSelection(boolean val) {
@@ -41,7 +45,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         pack();
     }
 
-    FileFilter getDialogFileFilter() throws PatternSyntaxException {
+    public FileFilter getDialogFileFilter() throws PatternSyntaxException {
         FileListerFilter retFilter = new FileListerFilter();
         retFilter.setAcceptingDirectory(alterDirectoriesBox.isSelected());
         retFilter.setAcceptingHidden(alterHiddenBox.isSelected());
@@ -55,7 +59,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         return retFilter;
     }
 
-    Set<PosixFilePermission> getDialogPermissions() {
+    public Set<PosixFilePermission> getDialogPermissions() {
         Set<PosixFilePermission> retSet = EnumSet.noneOf(PosixFilePermission.class);
         if (ownerRBox.isSelected()) retSet.add(PosixFilePermission.OWNER_READ);
         if (ownerWBox.isSelected()) retSet.add(PosixFilePermission.OWNER_WRITE);
@@ -71,11 +75,17 @@ public class PermissionsAlterDialog extends BaseDialog {
         return retSet;
     }
 
+    public int getDialogAlterType() {
+        return replacePermissionsBox.isSelected() ? FileLister.REPLACE_ALTER :
+               (addPermissionsBox.isSelected() ? FileLister.ADD_ALTER : FileLister.REMOVE_ALTER);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        alterTypeBoxes = new javax.swing.ButtonGroup();
         boxesPanel = new javax.swing.JPanel();
         boxesPanelTitle = new javax.swing.JLabel();
         ownerRBox = new javax.swing.JCheckBox();
@@ -87,6 +97,9 @@ public class PermissionsAlterDialog extends BaseDialog {
         ownerXBox = new javax.swing.JCheckBox();
         groupXBox = new javax.swing.JCheckBox();
         othersXBox = new javax.swing.JCheckBox();
+        replacePermissionsBox = new javax.swing.JRadioButton();
+        addPermissionsBox = new javax.swing.JRadioButton();
+        removePermissionsBox = new javax.swing.JRadioButton();
         buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         setButton = new javax.swing.JButton();
@@ -113,21 +126,21 @@ public class PermissionsAlterDialog extends BaseDialog {
 
         ownerRBox.setText("Owner read");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(ownerRBox, gridBagConstraints);
 
         groupRBox.setText("Group read");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(groupRBox, gridBagConstraints);
 
         othersRBox.setText("Others read");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(othersRBox, gridBagConstraints);
@@ -135,7 +148,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         ownerWBox.setText("Owner write");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(ownerWBox, gridBagConstraints);
@@ -143,7 +156,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         groupWBox.setText("Group write");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(groupWBox, gridBagConstraints);
@@ -151,7 +164,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         othersWBox.setText("Others write");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(othersWBox, gridBagConstraints);
@@ -159,7 +172,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         ownerXBox.setText("Owner execute");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(ownerXBox, gridBagConstraints);
@@ -167,7 +180,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         groupXBox.setText("Group execute");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(groupXBox, gridBagConstraints);
@@ -175,10 +188,29 @@ public class PermissionsAlterDialog extends BaseDialog {
         othersXBox.setText("Others execute");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(othersXBox, gridBagConstraints);
+
+        replacePermissionsBox.setSelected(true);
+        replacePermissionsBox.setText("Replace");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        boxesPanel.add(replacePermissionsBox, gridBagConstraints);
+
+        addPermissionsBox.setText("Add");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        boxesPanel.add(addPermissionsBox, gridBagConstraints);
+
+        removePermissionsBox.setText("Remove");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        boxesPanel.add(removePermissionsBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -200,7 +232,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
         buttonsPanel.add(cancelButton, gridBagConstraints);
 
-        setButton.setText("Set");
+        setButton.setText("Ok");
         setButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setButtonActionPerformed(evt);
@@ -214,7 +246,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 10, 5);
         getContentPane().add(buttonsPanel, gridBagConstraints);
 
         patternSelectionPanel.setLayout(new java.awt.GridBagLayout());
@@ -224,6 +256,7 @@ public class PermissionsAlterDialog extends BaseDialog {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
         patternSelectionPanel.add(includePatternLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -293,8 +326,10 @@ private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton addPermissionsBox;
     private javax.swing.JCheckBox alterDirectoriesBox;
     private javax.swing.JCheckBox alterHiddenBox;
+    private javax.swing.ButtonGroup alterTypeBoxes;
     private javax.swing.JPanel boxesPanel;
     private javax.swing.JLabel boxesPanelTitle;
     private javax.swing.JPanel buttonsPanel;
@@ -314,6 +349,8 @@ private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JCheckBox ownerWBox;
     private javax.swing.JCheckBox ownerXBox;
     private javax.swing.JPanel patternSelectionPanel;
+    private javax.swing.JRadioButton removePermissionsBox;
+    private javax.swing.JRadioButton replacePermissionsBox;
     private javax.swing.JButton setButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -20,6 +20,7 @@
 package com.subbst.permissionsfix.gui;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,7 +31,6 @@ import javax.swing.table.TableModel;
 
 import com.subbst.permissionsfix.core.FileLister;
 import com.subbst.permissionsfix.core.PosixFilePermission;
-import java.io.FileFilter;
 
 /**
  * Model for JTable component.
@@ -100,14 +100,14 @@ public class FileListerTableModel extends FileLister implements TableModel {
     }
 
     @Override
-    public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms) {
-        super.alterPermissions(filter, perms);
+    public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms, int alterType) {
+        super.alterPermissions(filter, perms, alterType);
         fireTableChanged();
     }
 
     @Override
-    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms) {
-        super.alterPermissions(indexes, perms);
+    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms, int alterType) {
+        super.alterPermissions(indexes, perms, alterType);
         fireTableChanged();
     }
 

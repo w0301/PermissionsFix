@@ -20,13 +20,13 @@
 package com.subbst.permissionsfix.gui;
 
 import java.io.File;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import com.subbst.permissionsfix.core.FileListerAdapter;
 import com.subbst.permissionsfix.core.FileListerListener;
-import java.util.regex.PatternSyntaxException;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -252,7 +252,7 @@ private void loadFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
         public void afterloadAction() {
             dlg.enableOkButton(true);
             dlg.setFinished(true);
-            dlg.setProgressMsg("All files are loaded");
+            dlg.setProgressMsg("Files have been loaded");
         }
     };
     newModel.addListener(newListener);
@@ -292,7 +292,7 @@ private void alterSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) 
     final PermissionsAlterDialog dlg = new PermissionsAlterDialog(this, "Alter permissions");
     dlg.usePatternSelection(false);
     if (dlg.showDialog() == PermissionsAlterDialog.OK_EXIT) {
-        this.filesTableModel.alterPermissions(filesTable.getSelectedRows(), dlg.getDialogPermissions());
+        this.filesTableModel.alterPermissions(filesTable.getSelectedRows(), dlg.getDialogPermissions(), dlg.getDialogAlterType());
     }
 }//GEN-LAST:event_alterSelectedButtonActionPerformed
 
@@ -337,7 +337,7 @@ private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
         public void aftersaveAction() {
             dlg.enableOkButton(true);
             dlg.setFinished(true);
-            dlg.setProgressMsg("All permissions are saved");
+            dlg.setProgressMsg("Files have been saved");
         }
     };
     filesTableModel.addListener(newListener);
@@ -369,7 +369,7 @@ private void alterFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {/
     dlg.usePatternSelection(true);
     if (dlg.showDialog() == PermissionsAlterDialog.OK_EXIT) {
         try {
-            this.filesTableModel.alterPermissions(dlg.getDialogFileFilter(), dlg.getDialogPermissions());
+            this.filesTableModel.alterPermissions(dlg.getDialogFileFilter(), dlg.getDialogPermissions(), dlg.getDialogAlterType());
         }
         catch (PatternSyntaxException ex) {
             JOptionPane.showMessageDialog(this, "Bad include/exclude pattern: " + ex.getMessage(), "Bad regex pattern", JOptionPane.ERROR_MESSAGE);

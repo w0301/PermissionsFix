@@ -24,7 +24,6 @@ import java.io.FileFilter;
 import java.util.regex.Pattern;
 
 public class FileListerFilter implements FileFilter {
-
     private boolean acceptingDirectory = true;
     private boolean acceptingHidden = true;
     private Pattern includePattern = null;

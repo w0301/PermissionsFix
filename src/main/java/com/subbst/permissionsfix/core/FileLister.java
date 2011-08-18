@@ -21,7 +21,9 @@ package com.subbst.permissionsfix.core;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,6 +32,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Class that is used for listing files and their permissions.
  */
 public class FileLister {
+    public static final int REPLACE_ALTER = 1;
+    public static final int ADD_ALTER = 2;
+    public static final int REMOVE_ALTER = 3;
 
     /**
      * Class that is used to store file info in list.
@@ -89,7 +94,6 @@ public class FileLister {
     private List<ListEntry> fileList = new ArrayList<ListEntry>();
     private List<FileListerListener> fileListerListeners = new ArrayList<FileListerListener>();
 
-
     private List<File> listFiles(File file, boolean recursive) {
         if (shouldStopLoading()) return null;
 
@@ -107,6 +111,18 @@ public class FileLister {
             }
         }
         return retList;
+    }
+
+    private static Set<PosixFilePermission> mergePermissionsLists(Set<PosixFilePermission> actual, Set<PosixFilePermission> changer, int alterType) {
+        if (alterType != REPLACE_ALTER) {
+            Set<PosixFilePermission> retSet = EnumSet.copyOf(actual);
+            for (PosixFilePermission perm : changer) {
+                if (alterType == ADD_ALTER) retSet.add(perm);
+                else if (alterType == REMOVE_ALTER) retSet.remove(perm);
+            }
+            return retSet;
+        }
+        return changer;
     }
 
     private boolean shouldStopLoading() {
@@ -219,10 +235,13 @@ public class FileLister {
                 fireFileLoading(f.getAbsolutePath());
 
                 // loading file
-                this.fileList.add(new ListEntry(f));
+                this.fileList.add(new ListEntry(f.getCanonicalFile()));
             }
             catch (PosixFilePermissionsException ex) {
                 fireFileLoadingFailed(ex.getFileName());
+            }
+            catch (IOException ex) {
+                fireFileLoadingFailed(ex.getMessage());
             }
         }
 
@@ -234,19 +253,21 @@ public class FileLister {
         this.stopLoading.set(true);
     }
 
-    public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms) {
+    public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms, int alterType) {
         // check all file entries and if it is desired change permissions
         for (ListEntry le : this.fileList) {
             if(filter.accept(le.getFile())) {
+                Set<PosixFilePermission> newPerms = mergePermissionsLists(le.getPermissions(), perms, alterType);
                 le.alterPermissions(perms);
             }
         }
     }
 
-    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms) {
+    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms, int alterType) {
         // change permissions of files with given indexes
         for (int i : indexes) {
-            this.fileList.get(i).alterPermissions(perms);
+            Set<PosixFilePermission> newPerms = mergePermissionsLists(fileList.get(i).getPermissions(), perms, alterType);
+            this.fileList.get(i).alterPermissions(newPerms);
         }
     }
 

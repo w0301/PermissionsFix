@@ -38,22 +38,22 @@ public class FileListerTest {
     public void testFileListing1() throws IOException {
         // init
         List<File> dirStruct = new ArrayList<File>();
-        dirStruct.add(new File("dirStruct"));
-        dirStruct.add(new File("dirStruct/dir1"));
-        dirStruct.add(new File("dirStruct/dir1/dir11"));
-        dirStruct.add(new File("dirStruct/dir1/dir12"));
-        dirStruct.add(new File("dirStruct/dir2"));
-        dirStruct.add(new File("dirStruct/dir2/dir22"));
-        dirStruct.add(new File("dirStruct/dir3"));
+        dirStruct.add(new File("dirStruct").getCanonicalFile());
+        dirStruct.add(new File("dirStruct/dir1").getCanonicalFile());
+        dirStruct.add(new File("dirStruct/dir1/dir11").getCanonicalFile());
+        dirStruct.add(new File("dirStruct/dir1/dir12").getCanonicalFile());
+        dirStruct.add(new File("dirStruct/dir2").getCanonicalFile());
+        dirStruct.add(new File("dirStruct/dir2/dir22").getCanonicalFile());
+        dirStruct.add(new File("dirStruct/dir3").getCanonicalFile());
         for (File f : dirStruct) f.mkdir();
 
         List<File> fileStruct = new ArrayList<File>();
-        fileStruct.add(new File("dirStruct/file1"));
-        fileStruct.add(new File("dirStruct/file2"));
-        fileStruct.add(new File("dirStruct/dir1/file3"));
-        fileStruct.add(new File("dirStruct/dir1/dir11/file4"));
-        fileStruct.add(new File("dirStruct/dir2/dir22/file5"));
-        fileStruct.add(new File("dirStruct/dir3/file6"));
+        fileStruct.add(new File("dirStruct/file1").getCanonicalFile());
+        fileStruct.add(new File("dirStruct/file2").getCanonicalFile());
+        fileStruct.add(new File("dirStruct/dir1/file3").getCanonicalFile());
+        fileStruct.add(new File("dirStruct/dir1/dir11/file4").getCanonicalFile());
+        fileStruct.add(new File("dirStruct/dir2/dir22/file5").getCanonicalFile());
+        fileStruct.add(new File("dirStruct/dir3/file6").getCanonicalFile());
         for (File f : fileStruct) f.createNewFile();
 
         // testing
@@ -74,7 +74,7 @@ public class FileListerTest {
     @Test
     public void testFileListing2() throws IOException {
         // init
-        File testDir = new File("testDir");
+        File testDir = new File("testDir").getCanonicalFile();
         testDir.mkdir();
 
         // testing
@@ -90,7 +90,7 @@ public class FileListerTest {
     @Test
     public void testFileListing3() throws IOException {
         // init
-        File testFile = new File("testFile");
+        File testFile = new File("testFile").getCanonicalFile();
         testFile.createNewFile();
 
         // testing

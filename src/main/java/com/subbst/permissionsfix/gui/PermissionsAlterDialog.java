@@ -20,16 +20,39 @@
 package com.subbst.permissionsfix.gui;
 
 import java.awt.Frame;
+import java.io.FileFilter;
 import java.util.EnumSet;
 import java.util.Set;
 
+import com.subbst.permissionsfix.core.FileListerFilter;
 import com.subbst.permissionsfix.core.PosixFilePermission;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class PermissionsAlterDialog extends BaseDialog {
 
     public PermissionsAlterDialog(Frame parent, String title) {
         super(parent, title);
         initComponents();
+    }
+
+    public void usePatternSelection(boolean val) {
+        patternSelectionPanel.setVisible(val);
+        pack();
+    }
+
+    FileFilter getDialogFileFilter() throws PatternSyntaxException {
+        FileListerFilter retFilter = new FileListerFilter();
+        retFilter.setAcceptingDirectory(alterDirectoriesBox.isSelected());
+        retFilter.setAcceptingHidden(alterHiddenBox.isSelected());
+
+        String includePatternText = includePatternField.getText();
+        if (!includePatternText.equals("")) retFilter.setIncludePattern(Pattern.compile(includePatternText, Pattern.CASE_INSENSITIVE));
+
+        String excludePatternString = excludePatternField.getText();
+        if (!excludePatternString.equals("")) retFilter.setExcludePattern(Pattern.compile(excludePatternString, Pattern.CASE_INSENSITIVE));
+
+        return retFilter;
     }
 
     Set<PosixFilePermission> getDialogPermissions() {
@@ -67,6 +90,14 @@ public class PermissionsAlterDialog extends BaseDialog {
         buttonsPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         setButton = new javax.swing.JButton();
+        patternSelectionPanel = new javax.swing.JPanel();
+        includePatternLabel = new javax.swing.JLabel();
+        includePatternField = new javax.swing.JTextField();
+        excludePatternLabel = new javax.swing.JLabel();
+        excludePatternField = new javax.swing.JTextField();
+        alterDirectoriesBox = new javax.swing.JCheckBox();
+        alterHiddenBox = new javax.swing.JCheckBox();
+        includeOptionsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -151,11 +182,10 @@ public class PermissionsAlterDialog extends BaseDialog {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(boxesPanel, gridBagConstraints);
 
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
@@ -166,7 +196,9 @@ public class PermissionsAlterDialog extends BaseDialog {
                 cancelButtonActionPerformed(evt);
             }
         });
-        buttonsPanel.add(cancelButton, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
+        buttonsPanel.add(cancelButton, gridBagConstraints);
 
         setButton.setText("Set");
         setButton.addActionListener(new java.awt.event.ActionListener() {
@@ -174,16 +206,78 @@ public class PermissionsAlterDialog extends BaseDialog {
                 setButtonActionPerformed(evt);
             }
         });
-        buttonsPanel.add(setButton, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 3, 0, 3);
+        buttonsPanel.add(setButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(buttonsPanel, gridBagConstraints);
+
+        patternSelectionPanel.setLayout(new java.awt.GridBagLayout());
+
+        includePatternLabel.setText("Include pattern:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        patternSelectionPanel.add(includePatternLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 0);
-        getContentPane().add(buttonsPanel, gridBagConstraints);
+        patternSelectionPanel.add(includePatternField, gridBagConstraints);
+
+        excludePatternLabel.setText("Exclude pattern:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        patternSelectionPanel.add(excludePatternLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        patternSelectionPanel.add(excludePatternField, gridBagConstraints);
+
+        alterDirectoriesBox.setText("Directories");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        patternSelectionPanel.add(alterDirectoriesBox, gridBagConstraints);
+
+        alterHiddenBox.setText("Hidden files");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        patternSelectionPanel.add(alterHiddenBox, gridBagConstraints);
+
+        includeOptionsLabel.setText("Include options:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        patternSelectionPanel.add(includeOptionsLabel, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(patternSelectionPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -199,19 +293,27 @@ private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox alterDirectoriesBox;
+    private javax.swing.JCheckBox alterHiddenBox;
     private javax.swing.JPanel boxesPanel;
     private javax.swing.JLabel boxesPanelTitle;
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelButton;
+    private javax.swing.JTextField excludePatternField;
+    private javax.swing.JLabel excludePatternLabel;
     private javax.swing.JCheckBox groupRBox;
     private javax.swing.JCheckBox groupWBox;
     private javax.swing.JCheckBox groupXBox;
+    private javax.swing.JLabel includeOptionsLabel;
+    private javax.swing.JTextField includePatternField;
+    private javax.swing.JLabel includePatternLabel;
     private javax.swing.JCheckBox othersRBox;
     private javax.swing.JCheckBox othersWBox;
     private javax.swing.JCheckBox othersXBox;
     private javax.swing.JCheckBox ownerRBox;
     private javax.swing.JCheckBox ownerWBox;
     private javax.swing.JCheckBox ownerXBox;
+    private javax.swing.JPanel patternSelectionPanel;
     private javax.swing.JButton setButton;
     // End of variables declaration//GEN-END:variables
 }

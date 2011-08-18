@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 
 import com.subbst.permissionsfix.core.FileListerAdapter;
 import com.subbst.permissionsfix.core.FileListerListener;
+import java.util.regex.PatternSyntaxException;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -110,7 +111,7 @@ public class MainFrame extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         getContentPane().add(filesLoaderPanel, gridBagConstraints);
 
-        filesTablePanel.setPreferredSize(new java.awt.Dimension(250, 250));
+        filesTablePanel.setPreferredSize(new java.awt.Dimension(450, 200));
         filesTablePanel.setLayout(new java.awt.GridBagLayout());
 
         filesTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -148,6 +149,11 @@ public class MainFrame extends javax.swing.JFrame {
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         alterFilterButton.setText("Alter by filter...");
+        alterFilterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterFilterButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -284,6 +290,7 @@ private void alterSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) 
 
     // showing dialog adn getting return code
     final PermissionsAlterDialog dlg = new PermissionsAlterDialog(this, "Alter permissions");
+    dlg.usePatternSelection(false);
     if (dlg.showDialog() == PermissionsAlterDialog.OK_EXIT) {
         this.filesTableModel.alterPermissions(filesTable.getSelectedRows(), dlg.getDialogPermissions());
     }
@@ -350,6 +357,25 @@ private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     }
     filesTableModel.removeListener(newListener);
 }//GEN-LAST:event_saveFilesButtonActionPerformed
+
+private void alterFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterFilterButtonActionPerformed
+    if (filesTableModel == null) {
+        JOptionPane.showMessageDialog(this, "You have to load files first.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+
+    // showing dialog adn getting return code
+    final PermissionsAlterDialog dlg = new PermissionsAlterDialog(this, "Alter permissions");
+    dlg.usePatternSelection(true);
+    if (dlg.showDialog() == PermissionsAlterDialog.OK_EXIT) {
+        try {
+            this.filesTableModel.alterPermissions(dlg.getDialogFileFilter(), dlg.getDialogPermissions());
+        }
+        catch (PatternSyntaxException ex) {
+            JOptionPane.showMessageDialog(this, "Bad include/exclude pattern: " + ex.getMessage(), "Bad regex pattern", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}//GEN-LAST:event_alterFilterButtonActionPerformed
 
     private FileListerTableModel filesTableModel = null;
 

@@ -45,16 +45,16 @@ public class FileLister {
             this.filePerms = PosixFilePermissions.getPermissions(file);
         }
 
-        public boolean isAltered() {
-            return this.permsAltered;
-        }
-
         public File getFile() {
             return this.file;
         }
 
         public Set<PosixFilePermission> getPermissions() {
             return this.filePerms;
+        }
+
+        public boolean arePermissionsAltered() {
+            return this.permsAltered;
         }
 
         public Set<PosixFilePermission> getAlteredPermissions() {
@@ -66,8 +66,13 @@ public class FileLister {
             this.permsAltered = true;
         }
 
-        public void savePermissions() throws PosixFilePermissionsException {
-            if (isAltered()) {
+        public void revertPermissions() {
+            this.alteredPerms = null;
+            this.permsAltered = false;
+        }
+
+        public void saveFile() throws PosixFilePermissionsException {
+            if (arePermissionsAltered()) {
                 PosixFilePermissions.setPermissions(this.file, this.alteredPerms);
                 this.filePerms = this.alteredPerms;
                 this.alteredPerms = null;
@@ -239,13 +244,13 @@ public class FileLister {
     }
 
     public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms) {
-        // check all file entries and if it is desired change permissions
+        // change permissions of files with given indexes
         for (int i : indexes) {
             this.fileList.get(i).alterPermissions(perms);
         }
     }
 
-    public void saveAllPermissions() {
+    public void saveFiles() {
         // reseting loading stoper
         resetSavingStopper();
 
@@ -258,8 +263,8 @@ public class FileLister {
                 // inform about saving
                 fireFileSaving(le.getFile().getAbsolutePath());
 
-                // save permissions
-                le.savePermissions();
+                // save file
+                le.saveFile();
             }
             catch (PosixFilePermissionsException ex) {
                 fireFileLoadingFailed(ex.getFileName());

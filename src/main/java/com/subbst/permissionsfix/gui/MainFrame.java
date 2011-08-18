@@ -37,20 +37,25 @@ public class MainFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        fileNameField = new javax.swing.JTextField();
-        recursiveLoadBox = new javax.swing.JCheckBox();
+        filesLoaderPanel = new javax.swing.JPanel();
         showChooserButton = new javax.swing.JButton();
+        fileNameField = new javax.swing.JTextField();
         loadFilesButton = new javax.swing.JButton();
-        alterSelectedButton = new javax.swing.JButton();
-        saveFilesButton = new javax.swing.JButton();
-        alterFilterButton = new javax.swing.JButton();
+        recursiveLoadBox = new javax.swing.JCheckBox();
+        filesTablePanel = new javax.swing.JPanel();
         filesTableScroll = new javax.swing.JScrollPane();
         filesTable = new javax.swing.JTable();
+        buttonsPanel = new javax.swing.JPanel();
+        alterFilterButton = new javax.swing.JButton();
+        saveFilesButton = new javax.swing.JButton();
+        alterSelectedButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        recursiveLoadBox.setText("Recursive");
+        filesLoaderPanel.setLayout(new java.awt.GridBagLayout());
 
         showChooserButton.setText("...");
         showChooserButton.addActionListener(new java.awt.event.ActionListener() {
@@ -58,6 +63,22 @@ public class MainFrame extends javax.swing.JFrame {
                 showChooserButtonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = -5;
+        gridBagConstraints.ipady = -10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(6, 3, 0, 0);
+        filesLoaderPanel.add(showChooserButton, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        filesLoaderPanel.add(fileNameField, gridBagConstraints);
 
         loadFilesButton.setText("Load");
         loadFilesButton.addActionListener(new java.awt.event.ActionListener() {
@@ -65,22 +86,32 @@ public class MainFrame extends javax.swing.JFrame {
                 loadFilesButtonActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
+        filesLoaderPanel.add(loadFilesButton, gridBagConstraints);
 
-        alterSelectedButton.setText("Alter selected...");
-        alterSelectedButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                alterSelectedButtonActionPerformed(evt);
-            }
-        });
+        recursiveLoadBox.setText("Recursive");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(3, 7, 0, 0);
+        filesLoaderPanel.add(recursiveLoadBox, gridBagConstraints);
 
-        saveFilesButton.setText("Save permissions");
-        saveFilesButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveFilesButtonActionPerformed(evt);
-            }
-        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        getContentPane().add(filesLoaderPanel, gridBagConstraints);
 
-        alterFilterButton.setText("Alter by filter...");
+        filesTablePanel.setPreferredSize(new java.awt.Dimension(250, 250));
+        filesTablePanel.setLayout(new java.awt.GridBagLayout());
 
         filesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,50 +126,68 @@ public class MainFrame extends javax.swing.JFrame {
         filesTableScroll.setViewportView(filesTable);
         filesTable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(filesTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(fileNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showChooserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(loadFilesButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(recursiveLoadBox))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(alterSelectedButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(alterFilterButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
-                        .addComponent(saveFilesButton)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fileNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showChooserButton, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loadFilesButton)
-                    .addComponent(recursiveLoadBox))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filesTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(alterSelectedButton)
-                    .addComponent(alterFilterButton)
-                    .addComponent(saveFilesButton))
-                .addContainerGap())
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        filesTablePanel.add(filesTableScroll, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        getContentPane().add(filesTablePanel, gridBagConstraints);
+
+        buttonsPanel.setLayout(new java.awt.GridBagLayout());
+
+        alterFilterButton.setText("Alter by filter...");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        buttonsPanel.add(alterFilterButton, gridBagConstraints);
+
+        saveFilesButton.setText("Save permissions");
+        saveFilesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveFilesButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        buttonsPanel.add(saveFilesButton, gridBagConstraints);
+
+        alterSelectedButton.setText("Alter selected...");
+        alterSelectedButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                alterSelectedButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 5);
+        buttonsPanel.add(alterSelectedButton, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 10, 10);
+        getContentPane().add(buttonsPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -212,8 +261,7 @@ private void loadFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     dialogThread.start();
 
     // showing dialog and handling its output
-    dlg.setVisible(true);
-    if (dlg.getExitCode() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
+    if (dlg.showDialog() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
         newModel.stopFilesLoading();
     }
     else {
@@ -234,12 +282,9 @@ private void alterSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) 
         return;
     }
 
-    // showing dialog
+    // showing dialog adn getting return code
     final PermissionsAlterDialog dlg = new PermissionsAlterDialog(this, "Alter permissions");
-    dlg.setVisible(true);
-
-    // getting return code of dialog and altering permissions
-    if (dlg.getExitCode() == PermissionsAlterDialog.OK_EXIT) {
+    if (dlg.showDialog() == PermissionsAlterDialog.OK_EXIT) {
         this.filesTableModel.alterPermissions(filesTable.getSelectedRows(), dlg.getDialogPermissions());
     }
 }//GEN-LAST:event_alterSelectedButtonActionPerformed
@@ -251,7 +296,7 @@ private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     }
 
     // firstly ask if user really wants to save parmissions
-    int ret = JOptionPane.showOptionDialog(this, "Do you reall want to save permissions?", "Save permissions?",
+    int ret = JOptionPane.showOptionDialog(this, "Do you really want to save permissions?", "Save permissions?",
                                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
     if(ret != JOptionPane.YES_OPTION) return;
 
@@ -294,14 +339,13 @@ private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     Thread dialogThread = new Thread(new Runnable() {
         @Override
         public void run() {
-            filesTableModel.saveAllPermissions();
+            filesTableModel.saveFiles();
         }
     });
     dialogThread.start();
 
     // showing progress dialog and handling its output
-    dlg.setVisible(true);
-    if (dlg.getExitCode() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
+    if (dlg.showDialog() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
         filesTableModel.stopFilesSaving();
     }
     filesTableModel.removeListener(newListener);
@@ -312,8 +356,11 @@ private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton alterFilterButton;
     private javax.swing.JButton alterSelectedButton;
+    private javax.swing.JPanel buttonsPanel;
     private javax.swing.JTextField fileNameField;
+    private javax.swing.JPanel filesLoaderPanel;
     private javax.swing.JTable filesTable;
+    private javax.swing.JPanel filesTablePanel;
     private javax.swing.JScrollPane filesTableScroll;
     private javax.swing.JButton loadFilesButton;
     private javax.swing.JCheckBox recursiveLoadBox;

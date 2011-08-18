@@ -19,20 +19,16 @@
  */
 package com.subbst.permissionsfix.gui;
 
+import java.awt.Frame;
 import java.util.EnumSet;
 import java.util.Set;
 
 import com.subbst.permissionsfix.core.PosixFilePermission;
 
-public class PermissionsAlterDialog extends javax.swing.JDialog {
-    public static final int OK_EXIT = 1;
-    public static final int CANCEL_EXIT = 2;
-    public static final int OTHER_EXIT = 3;
+public class PermissionsAlterDialog extends BaseDialog {
 
-    private int exitCode = OTHER_EXIT;
-
-    public PermissionsAlterDialog(java.awt.Frame parent, String title) {
-        super(parent, title, true);
+    public PermissionsAlterDialog(Frame parent, String title) {
+        super(parent, title);
         initComponents();
     }
 
@@ -50,10 +46,6 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
         if (othersWBox.isSelected()) retSet.add(PosixFilePermission.OTHERS_WRITE);
         if (othersXBox.isSelected()) retSet.add(PosixFilePermission.OTHERS_EXECUTE);
         return retSet;
-    }
-
-    public int getExitCode() {
-        return this.exitCode;
     }
 
     @SuppressWarnings("unchecked")
@@ -77,6 +69,7 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
         setButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
         boxesPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -156,6 +149,15 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         boxesPanel.add(othersXBox, gridBagConstraints);
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 0, 6);
+        getContentPane().add(boxesPanel, gridBagConstraints);
+
         buttonsPanel.setLayout(new java.awt.GridBagLayout());
 
         cancelButton.setText("Cancel");
@@ -174,29 +176,14 @@ public class PermissionsAlterDialog extends javax.swing.JDialog {
         });
         buttonsPanel.add(setButton, new java.awt.GridBagConstraints());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(boxesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-                        .addContainerGap())))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(boxesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 6, 0);
+        getContentPane().add(buttonsPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

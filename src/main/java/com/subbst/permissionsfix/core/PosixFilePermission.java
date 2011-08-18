@@ -37,13 +37,13 @@ public enum PosixFilePermission {
     OWNER_WRITE(33, 1, 'w');
 
     private final int code;
-    private final int pos;
-    private final char sym;
+    private final int position;
+    private final char symbol;
 
     PosixFilePermission(int code, int pos, char sym) {
         this.code = code;
-        this.pos = pos;
-        this.sym = sym;
+        this.position = pos;
+        this.symbol = sym;
     }
 
     public final int getCode() {
@@ -51,16 +51,23 @@ public enum PosixFilePermission {
     }
 
     public final int getPosition() {
-        return this.pos;
+        return this.position;
     }
 
     public final char getSymbol() {
-        return this.sym;
+        return this.symbol;
     }
 
     public static PosixFilePermission getByCode(int code) {
         for (PosixFilePermission perm : values()) {
             if (perm.getCode() == code) return perm;
+        }
+        return OWNER_READ;
+    }
+
+    public static PosixFilePermission getByPosition(int pos) {
+        for (PosixFilePermission perm : values()) {
+            if (perm.getPosition() == pos) return perm;
         }
         return OWNER_READ;
     }

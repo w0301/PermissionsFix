@@ -36,17 +36,52 @@ import java.io.FileFilter;
  * Model for JTable component.
  */
 public class FileListerTableModel extends FileLister implements TableModel {
-
-    private static final int COLUMNS_COUNT = 3;
-    private static final String[] columnsNames;
+    private static final ColumnInfo[] columnInfos;
 
     private List<TableModelListener> tableListeners = new ArrayList<TableModelListener>();
 
+    protected static abstract class ColumnInfo {
+        public abstract String getName();
+        public abstract String getValue(ListEntry le);
+    }
+
     static {
-        columnsNames = new String[] {
-            "File name",
-            "Permissions",
-            "New permissions"
+        columnInfos = new ColumnInfo[] {
+            new ColumnInfo() {
+                @Override
+                public String getName() {
+                    return "File name";
+                }
+
+                @Override
+                public String getValue(ListEntry le) {
+                    return le.getFile().getAbsolutePath();
+                }
+            },
+            new ColumnInfo() {
+                @Override
+                public String getName() {
+                    return "Permissions";
+                }
+
+                @Override
+                public String getValue(ListEntry le) {
+                    return permissionsSetToString(le.getPermissions(), le.getFile().isDirectory());
+                }
+            },
+            new ColumnInfo() {
+                @Override
+                public String getName() {
+                    return "New permissions";
+                }
+
+                @Override
+                public String getValue(ListEntry le) {
+                    return le.arePermissionsAltered() ?
+                           permissionsSetToString(le.getAlteredPermissions(), le.getFile().isDirectory()) :
+                           "not set";
+                }
+            }
         };
     }
 
@@ -65,20 +100,20 @@ public class FileListerTableModel extends FileLister implements TableModel {
     }
 
     @Override
-    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms) {
-        super.alterPermissions(indexes, perms);
-        fireTableChanged();
-    }
-
-    @Override
     public void alterPermissions(FileFilter filter, Set<PosixFilePermission> perms) {
         super.alterPermissions(filter, perms);
         fireTableChanged();
     }
 
     @Override
-    public void saveAllPermissions() {
-        super.saveAllPermissions();
+    public void alterPermissions(int[] indexes, Set<PosixFilePermission> perms) {
+        super.alterPermissions(indexes, perms);
+        fireTableChanged();
+    }
+
+    @Override
+    public void saveFiles() {
+        super.saveFiles();
         fireTableChanged();
     }
 
@@ -105,9 +140,7 @@ public class FileListerTableModel extends FileLister implements TableModel {
     @Override
     public Object getValueAt(int i, int i1) {
         ListEntry en = getFileList().get(i);
-        if(i1 == 0) return en.getFile().getAbsolutePath();
-        if(i1 == 1) return permissionsSetToString(en.getPermissions(), en.getFile().isDirectory());
-        return permissionsSetToString(en.getAlteredPermissions(), en.getFile().isDirectory());
+        return columnInfos[i1].getValue(en);
     }
 
     @Override
@@ -117,12 +150,12 @@ public class FileListerTableModel extends FileLister implements TableModel {
 
     @Override
     public int getColumnCount() {
-        return COLUMNS_COUNT;
+        return columnInfos.length;
     }
 
     @Override
     public String getColumnName(int i) {
-        return columnsNames[i];
+        return columnInfos[i].getName();
     }
 
     @Override

@@ -35,6 +35,15 @@ public class PosixFilePermissions {
     private native static int[] get(String file);
     private native static int set(String file, int[] perms);
 
+    static {
+        // loading library from default library paths
+        // adjust LD_LIBRARY_PATH in app launcher script!
+        System.loadLibrary("PermissionsFix");
+    }
+
+    private PosixFilePermissions() {
+    }
+
     /**
      * Get file's permissions.
      *
@@ -74,16 +83,6 @@ public class PosixFilePermissions {
         String fileName = f.getAbsolutePath();
         if (set(fileName, lowLevelPerms) == -1)
             throw new PosixFilePermissionsException("Unable to set permissions.", fileName);
-    }
-
-    static {
-        // loading library from default library paths
-        // adjust LD_LIBRARY_PATH in app launcher script!
-        System.loadLibrary("PermissionsFix");
-    }
-
-    private PosixFilePermissions() {
-        super();
     }
 
 }

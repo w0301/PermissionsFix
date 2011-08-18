@@ -25,6 +25,7 @@ package com.subbst.permissionsfix.core;
 public class PosixFilePermissionsException extends Exception {
 
     private final String fileName;
+
     /**
      * Creates a new instance of exception.
      *

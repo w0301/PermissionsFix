@@ -21,6 +21,7 @@ package com.subbst.permissionsfix.gui;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class FileListerTableModel extends FileLister implements TableModel {
 
                 @Override
                 public String getValue(ListEntry le) {
-                    return le.getFile().getAbsolutePath();
+                    return le.getFileFullPath();
                 }
             },
             new ColumnInfo() {
@@ -95,7 +96,7 @@ public class FileListerTableModel extends FileLister implements TableModel {
         return retStr.toString();
     }
 
-    public FileListerTableModel(File baseFile) {
+    public FileListerTableModel(File baseFile) throws IOException {
         super(baseFile);
     }
 

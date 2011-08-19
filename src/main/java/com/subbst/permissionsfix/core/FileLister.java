@@ -54,6 +54,10 @@ public class FileLister {
             return this.file;
         }
 
+        public String getFileFullPath() {
+            return file.getAbsolutePath();
+        }
+
         public Set<PosixFilePermission> getPermissions() {
             return this.filePerms;
         }
@@ -141,9 +145,9 @@ public class FileLister {
         this.stopSaving.set(false);
     }
 
-    public FileLister(File file) {
+    public FileLister(File file) throws IOException {
         super();
-        this.baseFile = file;
+        this.baseFile = file.getCanonicalFile();
     }
 
     public void addListener(FileListerListener listener) {
@@ -298,6 +302,10 @@ public class FileLister {
 
     public void stopFilesSaving() {
         this.stopSaving.set(true);
+    }
+
+    public final File getBaseFile() {
+        return baseFile;
     }
 
     public final List<ListEntry> getFileList() {

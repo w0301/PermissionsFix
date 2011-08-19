@@ -20,6 +20,7 @@
 package com.subbst.permissionsfix.gui;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.JFileChooser;
@@ -213,7 +214,15 @@ private void showChooserButtonActionPerformed(java.awt.event.ActionEvent evt) {/
 private void loadFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFilesButtonActionPerformed
     // creating file lister (actually a model for table)
     String fileName = fileNameField.getText();
-    final FileListerTableModel newModel = new FileListerTableModel(new File(fileName));
+    final FileListerTableModel newModel;
+    try {
+        newModel = new FileListerTableModel(new File(fileName));
+    }
+    catch (IOException ex) {
+        // this is thrown only on some platform
+        JOptionPane.showMessageDialog(this, "File does not exist.", "Error message", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
     // setting up progress dialog
     final ProgressDialog dlg = new ProgressDialog(this, "Loading files");
@@ -369,7 +378,7 @@ private void alterFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {/
     dlg.usePatternSelection(true);
     if (dlg.showDialog() == PermissionsAlterDialog.OK_EXIT) {
         try {
-            this.filesTableModel.alterPermissions(dlg.getDialogFileFilter(), dlg.getDialogPermissions(), dlg.getDialogAlterType());
+            this.filesTableModel.alterPermissions(dlg.getDialogFileFilter(filesTableModel), dlg.getDialogPermissions(), dlg.getDialogAlterType());
         }
         catch (PatternSyntaxException ex) {
             JOptionPane.showMessageDialog(this, "Bad include/exclude pattern: " + ex.getMessage(), "Bad regex pattern", JOptionPane.ERROR_MESSAGE);

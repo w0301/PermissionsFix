@@ -24,18 +24,20 @@ import java.io.FileFilter;
 import java.util.regex.Pattern;
 
 public class FileListerFilter implements FileFilter {
+    private FileLister lister = null;
     private boolean acceptingDirectory = true;
     private boolean acceptingHidden = true;
     private Pattern includePattern = null;
     private Pattern excludePattern = null;
 
-    private static boolean isFileOrParentHidden(File file) {
-        if (file == null) return false;
-        return file.isHidden() || isFileOrParentHidden(file.getParentFile());
+    private static boolean isFileOrParentHidden(File file, File baseFile) {
+        if (file == null || file.equals(baseFile)) return false;
+        return file.isHidden() || isFileOrParentHidden(file.getParentFile(), baseFile);
     }
 
-    public FileListerFilter() {
+    public FileListerFilter(FileLister lister) {
         super();
+        this.lister = lister;
     }
 
     public boolean isAcceptingDirectory() {
@@ -74,7 +76,7 @@ public class FileListerFilter implements FileFilter {
     public boolean accept(File file) {
         CharSequence filePath = file.getAbsolutePath();
         return file.isDirectory() == isAcceptingDirectory() &&
-               isFileOrParentHidden(file) == isAcceptingHidden() &&
+               isFileOrParentHidden(file, lister.getBaseFile()) == isAcceptingHidden() &&
                (getIncludePattern() == null || getIncludePattern().matcher(filePath).find()) &&
                (getExcludePattern() == null || !getExcludePattern().matcher(filePath).find());
     }

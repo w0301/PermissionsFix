@@ -45,8 +45,8 @@ public class PermissionsAlterDialog extends BaseDialog {
         pack();
     }
 
-    public FileFilter getDialogFileFilter() throws PatternSyntaxException {
-        FileListerFilter retFilter = new FileListerFilter();
+    public FileFilter getDialogFileFilter(FileLister lister) throws PatternSyntaxException {
+        FileListerFilter retFilter = new FileListerFilter(lister);
         retFilter.setAcceptingDirectory(alterDirectoriesBox.isSelected());
         retFilter.setAcceptingHidden(alterHiddenBox.isSelected());
 

@@ -23,7 +23,7 @@ package com.subbst.permissionsfix.core;
  * Adapter class for FileListerListener interface.
  *
  * Extend this class to implement listener if you do not want to
- * implement all functions. This class just implement functions
+ * implement all methods. This class just implement methods
  * from FileListerListener interface with empty body.
  */
 public class FileListerAdapter implements FileListerListener {

@@ -26,12 +26,11 @@ import java.util.Set;
 /**
  * Class that loads file permissions.
  *
- * This class can load a save permissions of specific file.
- * It achieve it by calling the native code of POSIX like systems
- * by JNI.
+ * This class can load and save permissions of specific file.
+ * It consists of static methods that can be called to get/set
+ * file's permissions.
  */
 public class PosixFilePermissions {
-
     private native static int[] get(String file);
     private native static int set(String file, int[] perms);
 
@@ -45,10 +44,10 @@ public class PosixFilePermissions {
     }
 
     /**
-     * Get file's permissions.
+     * Gets file's permissions.
      *
-     * @param f File whichs permissions will be returned.
-     * @return Set of file's permissions.
+     * @param f file whichs permissions will be returned
+     * @return set of file's permissions
      * @throws PosixFilePermissionsException when getting of permissions failed
      */
     public static Set<PosixFilePermission> getPermissions(File f) throws PosixFilePermissionsException {
@@ -67,10 +66,10 @@ public class PosixFilePermissions {
     }
 
     /**
-     * Set permissions for specific file.
+     * Sets permissions for specific file.
      *
-     * @param f File whichs permissions will be set.
-     * @param perms Permissions to set.
+     * @param f file whichs permissions will be set
+     * @param perms set of new permissions
      * @throws PosixFilePermissionsException when setting of permissions failed
      */
     public static void setPermissions(File f, Set<PosixFilePermission> perms) throws PosixFilePermissionsException {

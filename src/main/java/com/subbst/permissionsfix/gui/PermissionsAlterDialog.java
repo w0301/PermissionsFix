@@ -282,14 +282,14 @@ public class PermissionsAlterDialog extends BaseDialog {
         gridBagConstraints.weightx = 1.0;
         patternSelectionPanel.add(excludePatternField, gridBagConstraints);
 
-        alterDirectoriesBox.setText("Directories");
+        alterDirectoriesBox.setText("Only directories");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         patternSelectionPanel.add(alterDirectoriesBox, gridBagConstraints);
 
-        alterHiddenBox.setText("Hidden files");
+        alterHiddenBox.setText("Hidden files also");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;

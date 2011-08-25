@@ -250,7 +250,7 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="alterDirectoriesBox">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Directories"/>
+            <Property name="text" type="java.lang.String" value="Only directories"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -260,7 +260,7 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="alterHiddenBox">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Hidden files"/>
+            <Property name="text" type="java.lang.String" value="Hidden files also"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

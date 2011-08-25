@@ -57,6 +57,16 @@
                 classpath="${build.main.java.dir}:${junit.dir}" includeAntRuntime="false"/>
     </target>
 
+    <target name="generate-doc" description="generate documentation from java sources">
+        <javadoc destdir="${build.doc.dir}" author="true" version="true" use="true" windowtitle="PermissionsFix API">
+            <packageset dir="${src.main.java.dir}" defaultexcludes="yes">
+                <include name="**"/>
+            </packageset>
+            <doctitle><![CDATA[<h1>PermissionsFix</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 2011 Richard Kakaš. All Rights Reserved.</i>]]></bottom>
+        </javadoc>
+    </target>
+
     <target name="dist-main" depends="compile-main" description="put main app to dist folder">
         <!-- make main app jar -->
         <mkdir dir="${dist.main.java.dir}"/>

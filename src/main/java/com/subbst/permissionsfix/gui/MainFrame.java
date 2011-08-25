@@ -31,6 +31,10 @@ import com.subbst.permissionsfix.core.FileListerListener;
 
 public class MainFrame extends javax.swing.JFrame {
 
+    private void showNotLoadedMsg() {
+        JOptionPane.showMessageDialog(this, "You have to load files first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     public MainFrame(String title) {
         super(title);
         initComponents();
@@ -264,7 +268,7 @@ private void loadFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
             dlg.setProgressMsg("Files have been loaded");
         }
     };
-    newModel.addListener(newListener);
+    newModel.addFileListerListener(newListener);
 
     // loading files
     Thread dialogThread = new Thread(new Runnable() {
@@ -281,7 +285,7 @@ private void loadFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     }
     else {
         // setting new model for table
-        newModel.removeListener(newListener);
+        newModel.removeFileListerListener(newListener);
         filesTable.setModel(newModel);
         filesTableModel = newModel;
     }
@@ -289,7 +293,7 @@ private void loadFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
 
 private void alterSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterSelectedButtonActionPerformed
     if (filesTableModel == null) {
-        JOptionPane.showMessageDialog(this, "You have to load files first.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        showNotLoadedMsg();
         return;
     }
     if (filesTable.getSelectedRowCount() == 0) {
@@ -307,7 +311,7 @@ private void alterSelectedButtonActionPerformed(java.awt.event.ActionEvent evt) 
 
 private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFilesButtonActionPerformed
     if (filesTableModel == null) {
-        JOptionPane.showMessageDialog(this, "You have to load files and alter them first.", "Info message", JOptionPane.INFORMATION_MESSAGE);
+        showNotLoadedMsg();
         return;
     }
 
@@ -349,7 +353,7 @@ private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
             dlg.setProgressMsg("Files have been saved");
         }
     };
-    filesTableModel.addListener(newListener);
+    filesTableModel.addFileListerListener(newListener);
 
     // saving permissions (in separate thread)
     Thread dialogThread = new Thread(new Runnable() {
@@ -364,12 +368,12 @@ private void saveFilesButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
     if (dlg.showDialog() == ProgressDialog.CANCEL_EXIT && !dlg.isFinished()) {
         filesTableModel.stopFilesSaving();
     }
-    filesTableModel.removeListener(newListener);
+    filesTableModel.removeFileListerListener(newListener);
 }//GEN-LAST:event_saveFilesButtonActionPerformed
 
 private void alterFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterFilterButtonActionPerformed
     if (filesTableModel == null) {
-        JOptionPane.showMessageDialog(this, "You have to load files first.", "Information", JOptionPane.INFORMATION_MESSAGE);
+        showNotLoadedMsg();
         return;
     }
 

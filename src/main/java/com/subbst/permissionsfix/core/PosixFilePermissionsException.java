@@ -21,9 +21,12 @@ package com.subbst.permissionsfix.core;
 
 /**
  * Exception that indicates error in PosixFilePermissions class.
+ *
+ * This exception is thrown by methods in PosixFilePermissions class.
+ * When it is thrown it indicates that setting/getting of permissions
+ * failed.
  */
 public class PosixFilePermissionsException extends Exception {
-
     private final String fileName;
 
     /**
@@ -48,7 +51,7 @@ public class PosixFilePermissionsException extends Exception {
     }
 
     /**
-     * Return file name associated with this exception.
+     * Returns file name associated with this exception.
      *
      * @return name of file which processing causes this exception
      */

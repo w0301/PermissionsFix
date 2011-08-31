@@ -23,6 +23,9 @@ import java.awt.Frame;
 
 import javax.swing.DefaultListModel;
 
+/**
+ * Class of progress dialog.
+ */
 public class ProgressDialog extends BaseDialog {
     private boolean progressFinished = false;
 

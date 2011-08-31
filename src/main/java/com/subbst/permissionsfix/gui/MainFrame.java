@@ -29,6 +29,9 @@ import javax.swing.JOptionPane;
 import com.subbst.permissionsfix.core.FileListerAdapter;
 import com.subbst.permissionsfix.core.FileListerListener;
 
+/**
+ * Class of main frame of application.
+ */
 public class MainFrame extends javax.swing.JFrame {
 
     private void showNotLoadedMsg() {

@@ -30,6 +30,9 @@ import com.subbst.permissionsfix.core.FileLister;
 import com.subbst.permissionsfix.core.FileListerFilter;
 import com.subbst.permissionsfix.core.PosixFilePermission;
 
+/**
+ * Class of permissions alter dialog.
+ */
 public class PermissionsAlterDialog extends BaseDialog {
 
     public PermissionsAlterDialog(Frame parent, String title) {

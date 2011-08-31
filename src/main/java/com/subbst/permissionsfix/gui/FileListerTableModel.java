@@ -35,14 +35,28 @@ import com.subbst.permissionsfix.core.PosixFilePermission;
 
 /**
  * Model for JTable component.
+ *
+ * This class is implementation of JTable model. It extends FileLister
+ * class as well.
  */
 public class FileListerTableModel extends FileLister implements TableModel {
     private static final ColumnInfo[] columnInfos;
 
     private List<TableModelListener> tableListeners = new ArrayList<TableModelListener>();
 
+    /**
+     * Class used for storing value of row and column name of given row.
+     */
     protected static abstract class ColumnInfo {
+        /**
+         * @return name of column
+         */
         public abstract String getName();
+
+        /**
+         * @param le FileLister.ListEntry object for cell
+         * @return value that has to be stored in cell
+         */
         public abstract String getValue(ListEntry le);
     }
 
@@ -96,6 +110,12 @@ public class FileListerTableModel extends FileLister implements TableModel {
         return retStr.toString();
     }
 
+    /**
+     * Crates new object.
+     *
+     * @param baseFile name of base file for FileLister
+     * @throws IOException when base file does not exist
+     */
     public FileListerTableModel(File baseFile) throws IOException {
         super(baseFile);
     }

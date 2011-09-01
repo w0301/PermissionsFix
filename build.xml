@@ -58,7 +58,7 @@
     </target>
 
     <target name="generate-doc" description="generate documentation from java sources">
-        <javadoc destdir="${build.doc.dir}" author="true" version="true" use="true" windowtitle="PermissionsFix API">
+        <javadoc destdir="${build.doc.html.dir}" author="true" version="true" use="true" windowtitle="PermissionsFix API">
             <packageset dir="${src.main.java.dir}" defaultexcludes="yes">
                 <include name="**"/>
             </packageset>
@@ -98,7 +98,7 @@
             <fileset dir="${build.test.java.dir}"/>
             <manifest>
                 <attribute name="Main-Class" value="${dist.test.java.main-class}"/>
-                <attribute name="Class-Path" value="${dist.main.java.dir}/${dist.main.java.jar} ${junit.dir}"/>
+                <attribute name="Class-Path" value="${dist.test.java.main.jar} ${junit.dir}"/>
             </manifest>
         </jar>
 
@@ -106,6 +106,16 @@
         <mkdir dir="${dist.test.script.dir}"/>
         <copy file="${src.test.script.file}" tofile="${dist.test.script.dir}/${dist.test.script.file}" overwrite="true"/>
         <chmod file="${dist.test.script.dir}/${dist.test.script.file}" perm="ugo+x"/>
+    </target>
+
+    <target name="dist-doc" depends="generate-doc" if="docdist" description="put docs to doc dist folder">
+        <!-- making target dir -->
+        <mkdir dir="${dist.doc.html.dir}"/>
+
+        <!-- copying doc files -->
+        <copy todir="${dist.doc.html.dir}" overwrite="true">
+            <fileset dir="${build.doc.html.dir}"/>
+        </copy>
     </target>
 
     <target name="run-main" depends="compile-main" description="run main program">
@@ -129,7 +139,7 @@
     </target>
 
     <target name="compile" depends="compile-main,compile-test" description="compile all sources"/>
-    <target name="dist" depends="dist-main,dist-test" description="dist all binaries"/>
+    <target name="dist" depends="dist-main,dist-test,dist-doc" description="dist all files"/>
 
     <target name="clean" description="clean up">
         <delete dir="${dist.dir}"/>

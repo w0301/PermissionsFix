@@ -1,0 +1,23 @@
+This is README file for small utility for fixing permissions called PermissionsFix.
+This utility provide simple GUI that helps you fix permissions on your filesystem.
+It is written in Java with some JNI code.
+
+To compile PermissionsFix you need:
+    - jdk 1.6 or later
+    - ant with cpptasks extension
+
+To run PermissionsFix you need:
+    - jre 1.6 or later
+    - unix system
+
+How to compile:
+    - navigate to PermissionsFix source directory
+    - type: "ant dist"
+    - when compiling is done all needed files are located in ant-dist directory
+    - you can specify options "-Ddocdist=1" and/or "-Dtestdist=1" if you wish
+      to place docs and/or test files to ant-dist directory
+    - you can run "ant run-test" to run test suits (you need junit4 for this)
+
+How to run:
+    - use "permfix" script in your ant-dist directory
+    - or you can use "ant run-main" if you are in source directory
